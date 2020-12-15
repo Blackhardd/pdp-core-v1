@@ -256,11 +256,9 @@ function pdp_parse_pricelist( $categories, $data ){
 		}
 
 		$category = array(
-		    'name'              => $categories[$key],
-            'master_option'     => $is_master_option,
-            'variable_price'    => $is_variable_price,
-		    'subcategories'     => $subcategories,
-            'services'          => $services
+		    'name'                  => $categories[$key],
+            'is_master_option'      => $is_master_option,
+            'is_variable_price'     => $is_variable_price
         );
 
 		if( $categories[$key] == 'стрижки/укладки/прически' ||
@@ -268,11 +266,21 @@ function pdp_parse_pricelist( $categories, $data ){
 		    $categories[$key] == 'уходы для волос' ||
 		    $categories[$key] == 'все виды окрашиваний' ||
 		    $categories[$key] == 'уходы после окрашиваний' ){
-			$category['hair_services'] = true;
+			$category['is_hair_services'] = true;
 		}
 		else{
-			$category['hair_services'] = false;
+			$category['is_hair_services'] = false;
 		}
+
+		if( $subcategories ){
+		    $category['services'] = $subcategories;
+        }
+		else{
+			$category['services'][] = array(
+			    'name'      => $categories[$key],
+			    'services'  => $services
+            );
+        }
 
 		$parsed_data[pdp_service_slug_to_key( $categories[$key] )] = $category;
 	}
