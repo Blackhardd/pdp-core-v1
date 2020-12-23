@@ -68,11 +68,12 @@ class PDP_Core_Ajax{
 
 	public function appointment(){
 		$data = array(
-			'name'      => $_POST['name'],
-			'email'     => $_POST['email'],
-			'phone'     => $_POST['phone'],
-			'salon'     => $_POST['salon'],
-			'cart'      => json_decode( str_replace( '\\', '', $_POST['cart'] ) )
+			'name'              => $_POST['name'],
+			'email'             => $_POST['email'],
+			'phone'             => $_POST['phone'],
+			'cart'              => json_decode( str_replace( '\\', '', $_POST['cart'] ) ),
+			'total'             => $_POST['total'],
+			'is_hair_services'  => $_POST['is_hair_services']
 		);
 
 		$this->message( $this->mailer->appointment_admins_notification( $data ), __( 'Спасибо за запись!<br>В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) );

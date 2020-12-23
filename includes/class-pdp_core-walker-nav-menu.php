@@ -57,7 +57,7 @@ class PDP_Core_Walker_Nav_Menu extends Walker_Nav_Menu {
          */
         $vue = '';
         if( $args->walker->has_children && $item->url == '#' ){
-            $vue .= ' @click="showSubMenu(' . $item->ID . ')" :class="{ active: activeSubMenu == ' . $item->ID . ' }" data-test';
+            $vue .= ' @click="showSubMenu(' . $item->ID . ')" :class="{ active: activeSubMenu == ' . $item->ID . ' }"';
         }
 
         /*

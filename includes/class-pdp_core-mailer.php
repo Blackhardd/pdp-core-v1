@@ -1,21 +1,29 @@
 <?php
 
 class PDP_Core_Mailer{
-	private $admin_emails;
 	private $site_url;
+	private $admin_emails;
+	private $hair_lengths;
 
 	public function __construct(){
 		$this->init();
 	}
 
 	private function init(){
+		$this->site_url = get_option( 'siteurl' );
+
 		$this->admin_emails = array(
 			get_option( 'admin_email' ),
 			'egorkolchenkode@gmail.com',
 			'Shadyanett@gmail.com',
 		);
 
-		$this->site_url = get_option( 'siteurl' );
+		$this->hair_lengths = array(
+			'от 5-15 см',
+			'от 15 - 25 см (выше плеч, каре, боб)',
+			'от 25 - 40 см (ниже плеч/выше лопаток)',
+			'от 40 - 60 см (ниже лопаток)'
+		);
 
 		add_filter( 'wp_mail_content_type', function( $content_type ){
 			return 'text/html';
@@ -27,48 +35,79 @@ class PDP_Core_Mailer{
 	}
 
 	private function get_appointment_template( $data ){
-		$salon = PDP_Core_Salon::get_by_id( $data['salon'] );
+		$salon = PDP_Core_Salon::get_by_id( $data['cart']->salon );
 
 		$services_html = '';
 
 		foreach( $data['cart']->items as $service ){
-			$services_html .= "<div>{$service->name}</div>";
+			$name = $service->name;
+			$price = 0;
+
+			if( count( $service->prices ) > 1 && $service->master ){
+				$price = $service->prices[$data['cart']->hair_length][$data['cart']->master_option];
+			}
+			else if( count( $service->prices ) > 1 && !$service->master ){
+				$price = $service->prices[$data['cart']->hair_length][0];
+			}
+			else if( count( $service->prices ) == 1 && $service->master ){
+				$price = $service->prices[0][$data['cart']->master_option];
+			}
+			else{
+				$price = $service->prices[0][0];
+			}
+
+			$services_html .= "
+				<div style='display: flex;'>
+					<div>{$name}</div>
+					<div style='margin-left: auto;'>{$price} грн</div>
+				</div>
+			";
+		}
+
+		$services_detail = "
+			<h3 style='margin-bottom: 8px;'>" . __( 'Дополнительная информация', 'pdp_core' ) . ":</h3>
+		";
+
+		if( $data['cart']->master_option ){
+			$services_detail .= '<div>Старший мастер.</div>';
+		}
+
+		if( $data['is_hair_services'] ){
+			$services_detail .= "<div>" . __( 'Длина волос', 'pdp_core' ) . " {$this->hair_lengths[$data['cart']->hair_length]}.</div>";
 		}
 
 		return '
-            <div style="padding: 40px; font-family: Arial; background-color: #f3f3f3;">
+            <div style="padding: 40px; font-family: Helvetica, Arial, sans-serif; font-size: 16px; background-color: #f3f3f3;">
                 <div style="max-width: 500px; margin: 0 auto; padding: 40px; background-color: white; border-radius: 4px;">
                 	<div style="text-align: center">
 	                    <a href="' . $this->site_url . '"><img src="https://new.p-de-p.com/wp-content/uploads/2020/10/logo.png" alt="Pied-De-Poule"></a>
-	                    <h1 style="text-align: center;">' . __( 'Заявка на запись', 'pdp_core' ) . ':</h1>
+	                    <h1 style="color: black; text-align: center;">' . __( 'Заявка на запись', 'pdp_core' ) . ':</h1>
                     </div>
         
                     <div>
                     	<div style="margin-bottom: 32px;">
-                    		<h3>' . __( 'Салон', 'pdp_core' ) . ':</h3>
-                    		<div>
-                                ' . $salon->post_title . '
-                            </div>
+                    		<h3 style="margin-bottom: 8px;">' . __( 'Салон', 'pdp_core' ) . ':</h3>
+                    		<div>' . $salon->post_title . '</div>
 						</div>
                     	
                         <div style="margin-bottom: 32px;">
-                            <h3>' . __( 'Контактные данные', 'pdp_core' ) . ':</h3>
-                            <div style="margin-bottom: 8px;">
-                                ' . $data['name'] . '
-                            </div>
-                            <div style="margin-bottom: 8px;">
-                                ' . $data['email'] . '
-                            </div>
-                            <div style="margin-bottom: 8px;">
-                                <a href="tel:' . $data['phone'] . '">' . $data['phone'] . '</a>
-                            </div>
+                            <h3 style="margin-bottom: 8px;">' . __( 'Контактные данные', 'pdp_core' ) . ':</h3>
+                            <div>' . $data['name'] . '</div>
+                            <div>' . $data['email'] . '</div>
+                            <div><a href="tel:' . $data['phone'] . '">' . $data['phone'] . '</a></div>
                         </div>
-        
+                        
                         <div style="margin-bottom: 32px;">
-                            <h3>' . __( 'Список услуг', 'pdp_core' ) . ':</h3>
-                            <div style="margin-bottom: 8px;">
-                                ' . $services_html . '
-                            </div>
+                        	' . $services_detail . '
+						</div>
+        
+                        <div>
+                            <h3 style="margin: 0; padding: 20px; background: #fafafa;">' . __( 'Список услуг', 'pdp_core' ) . '</h3>
+                            <div style="padding: 20px; background: #f3f3f3;">' . $services_html . '</div>
+                            <div style="display: flex; padding: 20px; font-size: 20px; background: #fafafa;">
+	                            <div>Итого:</div>
+	                            <div style="margin-left: auto;">' . $data['total'] . ' грн</div>
+							</div>
                         </div>
                     </div>
                 </div>
@@ -334,7 +373,7 @@ class PDP_Core_Mailer{
 
 	public function appointment_admins_notification( $data ){
 		$receivers = $this->admin_emails;
-		array_push( $receivers, carbon_get_post_meta( $data['salon'], 'email' ) );
+		array_push( $receivers, carbon_get_post_meta( $data['cart']->salon, 'email' ) );
 
 		return $this->send( $receivers, __( 'Новая заявка', 'pdp_core' ) , $this->get_appointment_template( $data ) );
 	}
