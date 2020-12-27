@@ -6,7 +6,9 @@ class PDP_Core_Shortcodes {
     public function __construct(){
         $this->shortcodes = array(
             'logos_grid',
-            'logos_grid_item'
+            'logos_grid_item',
+	        'list_grid',
+	        'list_grid_item'
         );
 
         $this->init();
@@ -18,11 +20,11 @@ class PDP_Core_Shortcodes {
         }
     }
 
-    public function logos_grid_func( $atts, $content ){
+    public function logos_grid_func( $atts, $content = null ){
         return '<div class="logos-grid logos-grid_style-01">'. do_shortcode( $content ) . '</div>';
     }
 
-    public function logos_grid_item_func( $atts ){
+    public function logos_grid_item_func( $atts, $content = null ){
         $atts = shortcode_atts( array(
             'image'     => '',
             'link'      => ''
@@ -48,4 +50,16 @@ class PDP_Core_Shortcodes {
             return false;
         }
     }
+
+    public function list_grid_func( $atts, $content = null ){
+	    $atts = shortcode_atts( array(
+		    'cols' => 3
+	    ), $atts );
+
+	    return "<ol class='list-grid list-grid_ordered' style='grid-template-columns: repeat({$atts['cols']}, 1fr)'>" . do_shortcode( $content ) . "</ol>";
+    }
+
+	public function list_grid_item_func( $atts, $content = null ){
+		return "<li class='list-item'><div>{$content}</div></li>";
+	}
 }
