@@ -491,7 +491,7 @@ function pdp_ajax_update_pricelists(){
  *  Get related posts
  */
 
-function pdp_get_related_posts( $id, $amount, $args = array() ){
+function pdp_get_related_posts( $id, $amount ){
     $terms = get_the_terms( $id, 'category' );
 
     if( empty( $terms ) ) $terms = array();
