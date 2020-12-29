@@ -350,60 +350,54 @@ function pdp_attach_meta_fields(){
             Field::make('image', 'hero_img', __('Изображение', 'pdp_core'))
                 ->set_width(25)
         ))
-        ->add_tab(__('Секции', 'pdp_core'), array(
-            Field::make('complex', 'sections', __('Список секций', 'pdp_core'))
-                ->set_collapsed(true)
-                ->add_fields(array(
-                    Field::make('text', 'title', __('Заголовок', 'pdp_core')),
-                    Field::make('image', 'image', __('Изображение', 'pdp_core')),
-                    Field::make('rich_text', 'content', __('Контент', 'pdp_core')),
-	                Field::make( 'association', 'details', __( 'Страница подробностей', 'pdp_core' ) )
-		                ->set_types( array(
-			                array(
-				                'type'          => 'post',
-				                'post_type'     => 'salon'
-			                )
-		                ) )
-		                ->set_max( 1 ),
-                    Field::make('complex', 'pricelist', __('Список цен', 'pdp_core'))
-                        ->set_collapsed(true)
-                        ->add_fields('basic', array(
-                            Field::make('text', 'category', __('Категория', 'pdp_core')),
-                            Field::make('complex', 'services', __('Список услуг', 'pdp_core'))
-                                ->set_collapsed(true)
-                                ->add_fields(array(
-                                    Field::make('text', 'name', __('Название', 'pdp_core')),
-                                    Field::make('text', 'price_from', __('Цена от', 'pdp_core')),
-                                    Field::make('text', 'price_to', __('Цена до', 'pdp_core'))
-                                ))
+        ->add_tab( __( 'Секции', 'pdp_core' ), array(
+            Field::make( 'complex', 'sections', __( 'Список секций', 'pdp_core' ) )
+                ->set_collapsed( true )
+                ->add_fields( array(
+                    Field::make( 'text', 'title', __('Заголовок', 'pdp_core' ) ),
+                    Field::make( 'image', 'image', __('Изображение', 'pdp_core' ) ),
+                    Field::make( 'rich_text', 'content', __('Контент', 'pdp_core' ) ),
+	                Field::make( 'text', 'details', __( 'Страница подробностей', 'pdp_core' ) ),
+                    Field::make( 'complex', 'pricelist', __( 'Список цен', 'pdp_core' ) )
+                        ->set_collapsed( true )
+                        ->add_fields( 'basic', array(
+                            Field::make( 'text', 'category', __( 'Категория', 'pdp_core') ),
+                            Field::make( 'complex', 'services', __( 'Список услуг', 'pdp_core' ) )
+                                ->set_collapsed( true )
+                                ->add_fields( array(
+                                    Field::make( 'text', 'name', __( 'Название', 'pdp_core' ) ),
+                                    Field::make( 'text', 'price_from', __( 'Цена от', 'pdp_core' ) ),
+                                    Field::make( 'text', 'price_to', __( 'Цена до', 'pdp_core' ) )
+                                ) )
                         ))
-                        ->add_fields('complex', array(
-                            Field::make('text', 'category', __('Категория', 'pdp_core')),
-                            Field::make('complex', 'services', __('Список услуг', 'pdp_core'))
-                                ->set_collapsed(true)
-                                ->add_fields(array(
-                                    Field::make('text', 'name', __('Название', 'pdp_core')),
-                                    Field::make('text', 'price_first_from', __('1 длина - от', 'pdp_core'))
-                                        ->set_width(25),
-                                    Field::make('text', 'price_first_to', __('1 длина - до', 'pdp_core'))
-                                        ->set_width(25),
-                                    Field::make('text', 'price_second_from', __('2 длина - от', 'pdp_core'))
-                                        ->set_width(25),
-                                    Field::make('text', 'price_second_to', __('2 длина - до', 'pdp_core'))
-                                        ->set_width(25),
-                                    Field::make('text', 'price_third_from', __('3 длина - от', 'pdp_core'))
-                                        ->set_width(25),
-                                    Field::make('text', 'price_third_to', __('3 длина - до', 'pdp_core'))
-                                        ->set_width(25),
-                                    Field::make('text', 'price_fourth_from', __('4 длина - от', 'pdp_core'))
-                                        ->set_width(25),
-                                    Field::make('text', 'price_fourth_to', __('4 длина - до', 'pdp_core'))
-                                        ->set_width(25),
+                        ->add_fields( 'complex', array(
+                            Field::make( 'text', 'category', __( 'Категория', 'pdp_core' ) ),
+                            Field::make( 'complex', 'services', __( 'Список услуг', 'pdp_core' ) )
+                                ->set_collapsed( true )
+                                ->add_fields( array(
+                                    Field::make( 'text', 'name', __( 'Название', 'pdp_core' ) ),
+                                    Field::make( 'text', 'price_first_from', __( '1 длина - от', 'pdp_core' ) )
+                                        ->set_width( 25 ),
+                                    Field::make('text', 'price_first_to', __( '1 длина - до', 'pdp_core' ) )
+                                        ->set_width( 25 ),
+                                    Field::make('text', 'price_second_from', __( '2 длина - от', 'pdp_core' ) )
+                                        ->set_width( 25 ),
+                                    Field::make('text', 'price_second_to', __( '2 длина - до', 'pdp_core' ) )
+                                        ->set_width( 25 ),
+                                    Field::make('text', 'price_third_from', __( '3 длина - от', 'pdp_core' ) )
+                                        ->set_width( 25 ),
+                                    Field::make('text', 'price_third_to', __( '3 длина - до', 'pdp_core' ) )
+                                        ->set_width( 25 ),
+                                    Field::make('text', 'price_fourth_from', __( '4 длина - от', 'pdp_core' ) )
+                                        ->set_width( 25 ),
+                                    Field::make('text', 'price_fourth_to', __( '4 длина - до', 'pdp_core' ) )
+                                        ->set_width( 25 ),
                                 ))
                         )),
-                    Field::make('text', 'form_title', __('Заголовок для формы', 'pdp_core')),
-                    Field::make('text', 'form_service', __('Название услуги для формы', 'pdp_core'))
-                ))
+                    Field::make( 'text', 'form_title', __( 'Заголовок для формы', 'pdp_core' ) ),
+                    Field::make( 'text', 'form_service', __( 'Название услуги для формы', 'pdp_core' ) ),
+                    Field::make( 'rich_text', 'after_content', __( 'Контент после секции', 'pdp_core' ) )
+                ) )
         ));
 }
 
