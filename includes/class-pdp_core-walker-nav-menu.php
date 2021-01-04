@@ -3,6 +3,10 @@
 class PDP_Core_Walker_Nav_Menu extends Walker_Nav_Menu {
     function start_lvl( &$output, $depth = 0, $args = NULL ){
         $output .= '<ul class="sub-menu">';
+
+        if( $depth == 0 ){
+	        $output .= '<li class="mobile-navigation__back"><button class="btn-icon"><svg width="22" height="16" fill="none"><path d="M.3 7.3a1 1 0 000 1.4l6.4 6.4A1 1 0 008 13.7L2.4 8l5.7-5.7A1 1 0 006.7 1L.3 7.3zM22 7H1v2h21V7z" fill="#000"/></svg><span>назад</span></button></li>';
+        }
     }
 
     function start_el( &$output, $item, $depth = 0, $args = NULL, $id = 0 ) {
