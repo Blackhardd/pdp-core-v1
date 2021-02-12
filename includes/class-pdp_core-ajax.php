@@ -76,7 +76,7 @@ class PDP_Core_Ajax{
 			'is_hair_services'  => $_POST['is_hair_services']
 		);
 
-		$this->message( $this->mailer->appointment_admins_notification( $data ), __( 'Спасибо за запись!<br>В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) );
+		$this->message( $this->mailer->appointment_admins_notification( $data ), __( 'Спасибо за запись! В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) );
 	}
 
     public function appointment_quick(){
@@ -88,7 +88,7 @@ class PDP_Core_Ajax{
 			    'service'   => $_POST['service']
 		    );
 
-		    $this->message( $this->mailer->quick_appointment_admins_notification( $data ), __( 'Спасибо за запись!<br>В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) );
+		    $this->message( $this->mailer->quick_appointment_admins_notification( $data ), __( 'Спасибо за запись! В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) );
 	    }
     }
 
@@ -100,7 +100,7 @@ class PDP_Core_Ajax{
 				'service'   => $_POST['service']
 			);
 
-			$this->message( $this->mailer->service_category_appointment_admins_notification( $data ), __( 'Спасибо за запись!<br>В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) );
+			$this->message( $this->mailer->service_category_appointment_admins_notification( $data ), __( 'Спасибо за запись! В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) );
 		}
 	}
 

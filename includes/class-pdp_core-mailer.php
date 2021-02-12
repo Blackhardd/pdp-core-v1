@@ -14,8 +14,8 @@ class PDP_Core_Mailer{
 
 		$this->admin_emails = array(
 			get_option( 'admin_email' ),
-			'egorkolchenkode@gmail.com',
-			'Shadyanett@gmail.com',
+			//'egorkolchenkode@gmail.com',
+			//'Shadyanett@gmail.com',
 		);
 
 		$this->hair_lengths = array(
@@ -330,7 +330,7 @@ class PDP_Core_Mailer{
         
                         <div>
                         	<h3>' . __( 'Заказ', 'pdp_core' ) . ':</h3>
-                        	Подарочный сертификат на сумму ' . $_POST['card'] . ' грн.
+                        	Подарочный сертификат на срок ' . $_POST['card'] . '.
                         </div>
                     </div>
                 </div>
@@ -373,7 +373,7 @@ class PDP_Core_Mailer{
 
 	public function appointment_admins_notification( $data ){
 		$receivers = $this->admin_emails;
-		array_push( $receivers, carbon_get_post_meta( $data['cart']->salon, 'email' ) );
+		//array_push( $receivers, carbon_get_post_meta( $data['cart']->salon, 'email' ) );
 
 		return $this->send( $receivers, __( 'Новая заявка', 'pdp_core' ) , $this->get_appointment_template( $data ) );
 	}
