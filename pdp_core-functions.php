@@ -17,7 +17,20 @@ function pdp_attach_theme_options(){
                     )
                 ) )
                 ->set_max( 1 ),
-            Field::make( 'textarea', 'analytics_code', __( 'Коды аналитик', 'pdp_core' ) )
+            Field::make( 'textarea', 'analytics_code', __( 'Коды аналитик', 'pdp_core' ) ),
+            Field::make( 'complex', 'gtag_actions', __( 'События аналитики', 'pdp_core' ) )
+                ->add_fields( array(
+                    Field::make( 'text', 'selector', __( 'Селектор', 'pdp_core' ) )
+                        ->set_width( 20 ),
+                    Field::make( 'text', 'event', __( 'Событие', 'pdp_core' ) )
+                        ->set_width( 20 ),
+                    Field::make( 'text', 'gtag_event', __( 'gtag событие', 'pdp_core' ) )
+                        ->set_width( 20 ),
+                    Field::make( 'text', 'gtag_category', __( 'gtag категория', 'pdp_core' ) )
+                        ->set_width( 20 ),
+                    Field::make( 'text', 'gtag_action', __( 'gtag действие', 'pdp_core' ) )
+                        ->set_width( 20 )
+                ) )
         ) )
         ->add_tab(__('Google API', 'pdp_core'), array(
             Field::make( 'text', 'google_client_id', __( 'ID клента', 'pdp_core' ) ),
