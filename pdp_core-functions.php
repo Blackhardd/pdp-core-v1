@@ -5,23 +5,33 @@ use Carbon_Fields\Field;
 
 add_action( 'carbon_fields_register_fields', 'pdp_attach_theme_options' );
 function pdp_attach_theme_options(){
-    $theme_options = Container::make( 'theme_options', __( 'Разное', 'pdp_core' ) )
-        ->set_icon('none')
+	$theme_options = Container::make( 'theme_options', __( 'Настройки', 'pdp_core' ) )
+	    ->set_icon('none')
         ->set_page_parent('pdp-options')
+        ->add_tab( __( 'Общие', 'pdp_core' ), array(
+            Field::make( 'association', 'phones_list_hero_city', __( 'Основной город', 'pdp_core' ) )
+                ->set_types( array(
+                    array(
+                        'type'      => 'term',
+                        'taxonomy'  => 'city'
+                    )
+                ) )
+                ->set_max( 1 )
+        ) )
         ->add_tab(__('Google API', 'pdp_core'), array(
-            Field::make('text', 'google_client_id', __('ID клента', 'pdp_core')),
-            Field::make('text', 'google_secret', __('Секретный код клента', 'pdp_core'))
-        ))
+            Field::make( 'text', 'google_client_id', __( 'ID клента', 'pdp_core' ) ),
+            Field::make( 'text', 'google_secret', __( 'Секретный код клента', 'pdp_core' ) )
+        ) )
         ->add_tab( __( 'Категории услуг', 'pdp_core' ), array(
             Field::make( 'complex', 'service_categories', __( 'Список категорий', 'pdp_core' ) )
                 ->set_collapsed( true )
                 ->add_fields( array(
                     Field::make( 'text', 'title', __( 'Имя категории', 'pdp_core' ) )
-                        ->set_width( 40 ),
+                         ->set_width( 40 ),
                     Field::make( 'text', 'slug', __( 'Ярлык', 'pdp_core' ) )
-                        ->set_width( 40 ),
+                         ->set_width( 40 ),
                     Field::make( 'image', 'cover', __( 'Обложка', 'pdp_core' ) )
-                        ->set_width( 20 )
+                         ->set_width( 20 )
                 ) )
         ) )
         ->add_tab( __( 'Социальные сети', 'pdp_core' ), array(
@@ -31,12 +41,12 @@ function pdp_attach_theme_options(){
             Field::make('text', 'facebook', __('Facebook', 'pdp_core')),
             Field::make('text', 'youtube', __('YouTube', 'pdp_core')),
         ) )
-	    ->add_tab( __( 'Контактные данные', 'pdp_core' ), array(
-		    Field::make( 'text', 'phone_qa', __( 'Номер отдела контроля качества', 'pdp_core' ) )
-		         ->set_attribute( 'type', 'tel' ),
+        ->add_tab( __( 'Контактные данные', 'pdp_core' ), array(
+            Field::make( 'text', 'phone_qa', __( 'Номер отдела контроля качества', 'pdp_core' ) )
+                 ->set_attribute( 'type', 'tel' ),
 		    Field::make( 'text', 'phone_marketing', __( 'Номер отдела маркетинга', 'pdp_core' ) )
-		         ->set_attribute( 'type', 'tel' ),
-	    ) );
+                 ->set_attribute( 'type', 'tel' ),
+        ) );
 }
 
 /**
