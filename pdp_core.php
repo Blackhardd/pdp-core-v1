@@ -13,10 +13,10 @@
  * @package           Pdp_core
  *
  * @wordpress-plugin
- * Plugin Name:       Pied-De-Poul Core
+ * Plugin Name:       PIED-DE-POULE Core
  * Plugin URI:        https://www.instagram.com/lovu_volnu/
- * Description:       Дополнительный функционал сайта.
- * Version:           1.0.0
+ * Description:       Core functionality plugin.
+ * Version:           1.0.1
  * Author:            Alexander Piskun
  * Author URI:        https://www.instagram.com/lovu_volnu/
  * License:           GPL-2.0+
