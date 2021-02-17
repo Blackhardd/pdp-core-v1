@@ -16,7 +16,8 @@ function pdp_attach_theme_options(){
                         'taxonomy'  => 'city'
                     )
                 ) )
-                ->set_max( 1 )
+                ->set_max( 1 ),
+            Field::make( 'textarea', 'analytics_code', __( 'Коды аналитик', 'pdp_core' ) )
         ) )
         ->add_tab(__('Google API', 'pdp_core'), array(
             Field::make( 'text', 'google_client_id', __( 'ID клента', 'pdp_core' ) ),
