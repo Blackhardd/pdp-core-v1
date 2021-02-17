@@ -5,9 +5,19 @@ use Carbon_Fields\Field;
 
 add_action( 'carbon_fields_register_fields', 'pdp_attach_theme_options' );
 function pdp_attach_theme_options(){
-    $theme_options = Container::make( 'theme_options', __( 'Разное', 'pdp_core' ) )
+    $theme_options = Container::make( 'theme_options', __( 'Настройки', 'pdp_core' ) )
         ->set_icon('none')
         ->set_page_parent('pdp-options')
+        ->add_tab( __( 'Общие', 'pdp_core' ), array(
+            Field::make( 'association', 'phones_list_hero_city', __( 'Основной город', 'pdp_core' ) )
+                ->set_types( array(
+                    array(
+                        'type'      => 'term',
+                        'taxonomy'  => 'city'
+                    )
+                ) )
+                ->set_max( 1 )
+        ) )
         ->add_tab(__('Google API', 'pdp_core'), array(
             Field::make('text', 'google_client_id', __('ID клента', 'pdp_core')),
             Field::make('text', 'google_secret', __('Секретный код клента', 'pdp_core'))
