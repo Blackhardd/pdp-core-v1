@@ -7,8 +7,7 @@ class PDP_Core_Salon {
         $salons = get_posts(
             array(
                 'numberposts'   => -1,
-                'post_type'     => 'salon',
-                'order'         => 'ASC'
+                'post_type'     => 'salon'
             )
         );
 
