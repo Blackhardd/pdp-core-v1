@@ -245,6 +245,7 @@ function pdp_parse_pricelist( $categories, $data ){
 									$current_service['prices'] = [$row];
 								}
 								break;
+                            case 3:
 							case 4:
 								$current_service['master'] = false;
 								$current_service['prices'] = array_chunk( $row, 1 );
