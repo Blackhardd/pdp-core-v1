@@ -41,7 +41,4 @@ class PDP_Core_i18n {
 		);
 
 	}
-
-
-
 }

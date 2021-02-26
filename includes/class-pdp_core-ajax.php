@@ -38,13 +38,11 @@ class PDP_Core_Ajax{
 			if( empty( $_POST ) || !wp_verify_nonce( $_POST['pdp_nonce'], 'pdp_' . $action_name . '_nonce' ) ){
 				return false;
 			}
-			else{
-				return true;
-			}
+
+			return true;
 		}
-		else{
-			return false;
-		}
+
+		return false;
     }
 
     private function register_public_ajax_actions(){
@@ -76,7 +74,7 @@ class PDP_Core_Ajax{
 			'is_hair_services'  => $_POST['is_hair_services']
 		);
 
-		$this->message( $this->mailer->appointment_admins_notification( $data ), __( 'Спасибо за запись!<br>В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) );
+		$this->message( $this->mailer->appointment_admins_notification( $data ), sprintf( '%s<br>%s', __( 'Спасибо за запись!', 'pdp_core' ), __( 'В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) ) );
 	}
 
     public function appointment_quick(){
@@ -88,7 +86,7 @@ class PDP_Core_Ajax{
 			    'service'   => $_POST['service']
 		    );
 
-		    $this->message( $this->mailer->quick_appointment_admins_notification( $data ), __( 'Спасибо за запись!<br>В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) );
+		    $this->message( $this->mailer->quick_appointment_admins_notification( $data ), sprintf( '%s<br>%s', __( 'Спасибо за запись!', 'pdp_core' ), __( 'В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) ) );
 	    }
     }
 
@@ -100,7 +98,7 @@ class PDP_Core_Ajax{
 				'service'   => $_POST['service']
 			);
 
-			$this->message( $this->mailer->service_category_appointment_admins_notification( $data ), __( 'Спасибо за запись!<br>В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) );
+			$this->message( $this->mailer->service_category_appointment_admins_notification( $data ), sprintf( '%s<br>%s', __( 'Спасибо за запись!', 'pdp_core' ), __( 'В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) ) );
 		}
 	}
 
@@ -113,7 +111,7 @@ class PDP_Core_Ajax{
 				'service'   => $_POST['service']
 			);
 
-			$this->message( $this->mailer->service_appointment_admins_notification( $data ), __( 'Спасибо за запись!<br>В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) );
+			$this->message( $this->mailer->service_appointment_admins_notification( $data ), sprintf( '%s<br>%s', __( 'Спасибо за запись!', 'pdp_core' ), __( 'В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) ) );
 		}
 	}
 
@@ -126,7 +124,7 @@ class PDP_Core_Ajax{
 				'service'   => $_POST['master']
 			);
 
-			$this->message( $this->mailer->master_appointment_admins_notification( $data ), __( 'Спасибо за запись!<br>В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) );
+			$this->message( $this->mailer->master_appointment_admins_notification( $data ), sprintf( '%s<br>%s', __( 'Спасибо за запись!', 'pdp_core' ), __( 'В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) ) );
 		}
 	}
 
@@ -139,7 +137,7 @@ class PDP_Core_Ajax{
 				'promotion'     => $_POST['promotion']
 			);
 
-			$this->message( $this->mailer->promotion_appointment_admins_notification( $data ), __( 'Спасибо за запись!<br>В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) );
+			$this->message( $this->mailer->promotion_appointment_admins_notification( $data ), sprintf( '%s<br>%s', __( 'Спасибо за запись!', 'pdp_core' ), __( 'В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) ) );
 		}
 	}
 
@@ -152,7 +150,7 @@ class PDP_Core_Ajax{
 	            'card'      => $_POST['card']
 		    );
 
-			$this->message( $this->mailer->gift_card_order_admins_notification( $data ), __( 'Спасибо за заказ!<br>В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) );
+			$this->message( $this->mailer->gift_card_order_admins_notification( $data ), sprintf( '%s<br>%s', __( 'Спасибо за заказ!', 'pdp_core' ), __( 'В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) ) );
 		}
 	}
 

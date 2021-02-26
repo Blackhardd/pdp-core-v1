@@ -13,16 +13,14 @@ class PDP_Core_Mailer{
 		$this->site_url = get_option( 'siteurl' );
 
 		$this->admin_emails = array(
-			get_option( 'admin_email' ),
-			'egorkolchenkode@gmail.com',
-			'Shadyanett@gmail.com',
+			get_option( 'admin_email' )
 		);
 
 		$this->hair_lengths = array(
-			'от 5-15 см',
-			'от 15 - 25 см (выше плеч, каре, боб)',
-			'от 25 - 40 см (ниже плеч/выше лопаток)',
-			'от 40 - 60 см (ниже лопаток)'
+			__( 'от 5-15 см', 'pdp' ),
+			__( 'от 15 - 25 см (выше плеч, каре, боб)', 'pdp' ),
+			__( 'от 25 - 40 см (ниже плеч/выше лопаток)', 'pdp' ),
+			__( 'от 40 - 60 см (ниже лопаток)', 'pdp' )
 		);
 
 		add_filter( 'wp_mail_content_type', function( $content_type ){
@@ -80,7 +78,7 @@ class PDP_Core_Mailer{
             <div style="padding: 40px; font-family: Helvetica, Arial, sans-serif; font-size: 16px; background-color: #f3f3f3;">
                 <div style="max-width: 500px; margin: 0 auto; padding: 40px; background-color: white; border-radius: 4px;">
                 	<div style="text-align: center">
-	                    <a href="' . $this->site_url . '"><img src="https://new.p-de-p.com/wp-content/uploads/2020/10/logo.png" alt="Pied-De-Poule"></a>
+	                    <a href="' . $this->site_url . '"><img src="https://new.p-de-p.com/wp-content/uploads/2020/10/logo.png" alt="PIED-DE-POULE"></a>
 	                    <h1 style="color: black; text-align: center;">' . __( 'Заявка на запись', 'pdp_core' ) . ':</h1>
                     </div>
         
@@ -375,36 +373,36 @@ class PDP_Core_Mailer{
 		$receivers = $this->admin_emails;
 		array_push( $receivers, carbon_get_post_meta( $data['cart']->salon, 'email' ) );
 
-		return $this->send( $receivers, __( 'Новая заявка', 'pdp_core' ) , $this->get_appointment_template( $data ) );
+		return $this->send( $receivers, __( 'Заявка', 'pdp_core' ) , $this->get_appointment_template( $data ) );
 	}
 
 	public function quick_appointment_admins_notification( $data ){
 		$receivers = $this->admin_emails;
 		array_push( $receivers, carbon_get_post_meta( $data['salon'], 'email' ) );
 
-		return $this->send( $receivers, __( 'Новая заявка', 'pdp_core' ) , $this->get_quick_appointment_template( $data ) );
+		return $this->send( $receivers, __( 'Заявка', 'pdp_core' ) , $this->get_quick_appointment_template( $data ) );
 	}
 
 	public function service_category_appointment_admins_notification( $data ){
-		return $this->send( $this->admin_emails, __( 'Новая заявка', 'pdp_core' ) , $this->get_service_category_appointment_template( $data ) );
+		return $this->send( $this->admin_emails, __( 'Заявка', 'pdp_core' ) , $this->get_service_category_appointment_template( $data ) );
 	}
 
 	public function service_appointment_admins_notification( $data ){
 		$receivers = $this->admin_emails;
 		array_push( $receivers, carbon_get_post_meta( $data['salon'], 'email' ) );
 		
-		return $this->send( $receivers, __( 'Новая заявка', 'pdp_core' ) , $this->get_service_appointment_template( $data ) );
+		return $this->send( $receivers, __( 'Заявка', 'pdp_core' ) , $this->get_service_appointment_template( $data ) );
     }
     
     public function master_appointment_admins_notification( $data ){
 		$receivers = $this->admin_emails;
 		array_push( $receivers, carbon_get_post_meta( $data['salon'], 'email' ) );
 		
-		return $this->send( $receivers, __( 'Новая заявка', 'pdp_core' ) , $this->get_master_appointment_template( $data ) );
+		return $this->send( $receivers, __( 'Заявка', 'pdp_core' ) , $this->get_master_appointment_template( $data ) );
 	}
 
 	public function promotion_appointment_admins_notification( $data ){
-		return $this->send( $this->admin_emails, __( 'Новая заявка', 'pdp_core' ) , $this->get_promotion_appointment_template( $data ) );
+		return $this->send( $this->admin_emails, __( 'Заявка', 'pdp_core' ) , $this->get_promotion_appointment_template( $data ) );
 	}
 
 	public function gift_card_order_admins_notification( $data ){
@@ -412,6 +410,6 @@ class PDP_Core_Mailer{
 	}
 
 	public function vacancy_apply_admins_notification( $data, $attachment ){
-		return $this->send( $this->admin_emails, __( 'Новый отклик на вакансию', 'pdp_core' ), $this->get_vacancy_apply_template( $data ), $attachment );
+		return $this->send( $this->admin_emails, __( 'Отклик на вакансию', 'pdp_core' ), $this->get_vacancy_apply_template( $data ), $attachment );
 	}
 }
