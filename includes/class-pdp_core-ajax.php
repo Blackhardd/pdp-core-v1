@@ -8,7 +8,8 @@ class PDP_Core_Ajax{
         $this->template_loader = new PDP_Core_Template_Loader();
         $this->mailer = new PDP_Core_Mailer();
 
-        $this->register_public_ajax_actions();
+        $this->register_public_actions();
+        $this->register_admin_actions();
     }
 
     private function message( $status, $message ){
@@ -45,7 +46,7 @@ class PDP_Core_Ajax{
 		return false;
     }
 
-    private function register_public_ajax_actions(){
+    private function register_public_actions(){
         $actions = array(
 	        'appointment',
             'appointment_quick',
@@ -59,9 +60,20 @@ class PDP_Core_Ajax{
         );
 
         foreach( $actions as $action ){
-            add_action( 'wp_ajax_'.$action, array( $this, $action ) );
-            add_action( 'wp_ajax_nopriv_'.$action, array( $this, $action ) );
+            add_action( 'wp_ajax_' . $action, array( $this, $action ) );
+            add_action( 'wp_ajax_nopriv_' . $action, array( $this, $action ) );
         }
+    }
+
+    private function register_admin_actions(){
+    	$actions = array(
+    		'sync_pricelist',
+    		'sync_pricelists'
+	    );
+
+    	foreach( $actions as $action ){
+		    add_action( 'wp_ajax_' . $action, array( $this, $action ) );
+	    }
     }
 
 	public function appointment(){
@@ -199,5 +211,59 @@ class PDP_Core_Ajax{
 		}
 
 		$this->message( true, $updated_likes );
+	}
+
+	/**
+	 *  ADMIN
+	 */
+
+	public function sync_pricelist(){
+		$google_api = new PDP_Core_Google();
+		$client = $google_api->get_client();
+		$service = new Google_Service_Sheets( $client );
+
+		$spreadsheet_id = pdp_get_pricelist_id( $_POST['id'] );
+		$spreadsheet = $service->spreadsheets->get( $spreadsheet_id );
+
+		$ranges = [];
+		$titles = [];
+
+		foreach( $spreadsheet->getSheets() as $sheet ){
+			$ranges[] = $sheet['properties']['title'] . '!A:I';
+			$titles[] = rtrim( $sheet['properties']['title'] );
+		}
+
+		$response = $service->spreadsheets_values->batchGet( $spreadsheet_id, array( 'ranges' => $ranges ) )->getValueRanges();
+
+		update_post_meta( $_POST['id'], '_pdp_pricelist', pdp_parse_pricelist( $titles, $response ) );
+		update_post_meta( $_POST['id'], '_pdp_pricelist_last_update', date( "Y-m-d H:i:s" ) );
+
+		$this->message( true, 'Sync single.' );
+	}
+
+	public function sync_pricelists(){
+		$google_api = new PDP_Core_Google();
+		$client = $google_api->get_client();
+		$service = new Google_Service_Sheets( $client );
+
+		foreach( pdp_get_pricelists_id() as $pricelist ){
+			$ranges = [];
+			$titles = [];
+			$spreadsheet_id = $pricelist['spreadsheet_id'];
+
+			$spreadsheet = $service->spreadsheets->get( $spreadsheet_id );
+
+			foreach( $spreadsheet->getSheets() as $sheet ){
+				$ranges[] = $sheet['properties']['title'] . '!A:I';
+				$titles[] = rtrim( $sheet['properties']['title'] );
+			}
+
+			$response = $service->spreadsheets_values->batchGet( $spreadsheet_id, array( 'ranges' => $ranges ) )->getValueRanges();
+
+			update_post_meta( $pricelist['salon_id'], '_pdp_pricelist', pdp_parse_pricelist( $titles, $response ) );
+			update_post_meta( $pricelist['salon_id'], '_pdp_pricelist_last_update', date( "Y-m-d H:i:s" ) );
+		}
+
+		$this->message( true, 'Sync all.' );
 	}
 }

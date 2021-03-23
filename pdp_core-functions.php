@@ -33,223 +33,8 @@ add_action('admin_menu', function () {
 	);
 });
 
-// функция отвечает за вывод страницы настроек
-// подробнее смотрите API Настроек: http://wp-kama.ru/id_3773/api-optsiy-nastroek.html
-function pdp_google_api_settings(){ ?>
-    <div class="wrap">
-        <div class="pdp-admin-page">
-            <header class="pdp-admin-page__header">
-                <h2 class="pdp-admin-heading"><?=get_admin_page_title(); ?></h2>
-            </header>
-
-            <main class="pdp-admin-page__body">
-                <?php
-                $google_api = new PDP_Core_Google();
-                $client = $google_api->get_client();
-
-                if( !$client->isAccessTokenExpired() ){
-                    $salons = pdp_get_salons(); ?>
-                    <div class="salons-list">
-                        <div class="salons-list__header">
-                            <h3><?=__( 'Салоны', 'pdp_core' ); ?></h3>
-                        </div>
-                        <div class="salons-list__body">
-                            <?php foreach( $salons as $salon ){ ?>
-                                <div class="salons-list__row <?php echo ( !$salon->_pricelist_sheet_id ) ? 'disabled' : ''; ?>">
-                                    <div class="salons-list__col salons-list__col_title">
-                                        <?=$salon->post_title; ?>
-                                    </div>
-
-                                    <div class="salons-list__col salons-list__col_id">
-                                        <?php if( $salon->_pricelist_sheet_id ){ ?>
-                                            <?=$salon->_pricelist_sheet_id; ?>
-                                        <?php } else { ?>
-                                            <?=__( 'Прайслист не подвязан', 'pdp_core' ); ?>
-                                            ( <a href="<?=get_edit_post_link( $salon->ID ); ?>"><?=__( 'подвязать', 'pdp_core' ); ?></a> )
-                                        <?php } ?>
-                                    </div>
-
-                                    <div class="salons-list__col salons-list__col_date">
-                                        <?php if( $salon->_pdp_pricelist_last_update ){ ?>
-                                            <stron><?=__( 'Последнее обновление:', 'pdp_core' ); ?></stron> <?=$salon->_pdp_pricelist_last_update; ?>
-                                        <?php } else { ?>
-                                            <?=__( 'Не обновлялся', 'pdp_core' ); ?>
-                                        <?php } ?>
-                                    </div>
-
-                                    <div class="salons-list__col salons-list__col_btns">
-                                        <button class="pdp-btn" data-update-pricelist="<?=$salon->ID; ?>" <?php echo ( !$salon->_pricelist_sheet_id ) ? 'disabled' : ''; ?>><?=__( 'Синхронизировать', 'pdp_core' ); ?></button>
-                                    </div>
-                                </div>
-                            <?php } ?>
-                        </div>
-                        <div class="salons-list__footer">
-                            <button class="pdp-btn" data-update-pricelists><?=__( 'Синхронизировать все цены', 'pdp_core' ); ?></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-                <?php } ?>
-            </main>
-        </div>
-    <script>
-        jQuery(function($){
-            $(document).ready(function(){
-                $('[data-update-pricelists]').click(function(){
-                    let $self = $(this);
-                    let data = {
-                        action: 'update_pricelists'
-                    };
-
-                    $.post(ajaxurl, data, function(response){
-                        alert('Ответ сервера: ' + response);
-                    });
-                });
-
-                $('[data-update-pricelist]').click(function(){
-                    let $self = $(this);
-                    let data = {
-                        action:     'update_pricelist',
-                        id:         $self.data('update-pricelist')
-                    };
-
-                    $.post(ajaxurl, data, function(response){
-                        alert('Ответ сервера: ' + response);
-                    });
-                });
-            });
-        });
-    </script>
-    <?php
-}
-
-function pdp_parse_pricelist( $categories, $data ){
-	$parsed_data = [];
-
-	foreach( $data as $key => $range ){
-		$category = [];
-		$services = [];
-		$subcategory_services = [];
-		$subcategories = [];
-		$subcategory_title = '';
-
-		$is_subcategory = false;
-		$is_master_option = false;
-		$is_variable_price = false;
-
-		foreach( $range as $row ){
-			if( $row[0] != '' ){
-				$row = array_values( array_filter( $row ) );
-
-				if( $row[0] == '[subcategory-begin]' ){
-					$is_subcategory = true;
-				}
-				else if( $row[0] == '[subcategory-end]' ){
-					$subcategories[] = array(
-						'name'      => $subcategory_title,
-						'services'  => $subcategory_services
-					);
-
-					$is_subcategory = false;
-
-					$subcategory_services = [];
-				}
-				else{
-					if( strpos( $row[0], '[subcategory-title]' ) !== false ){
-						$subcategory_title = str_replace( '[subcategory-title]', '', $row[0] );
-					}
-					else{
-						$current_service = [];
-						$is_pro = false;
-
-						if( strpos( $row[0], '[pro]' ) !== false ){
-							$current_service['name'] = str_replace( '[pro]', '', rtrim( array_shift( $row ) ) );
-							$is_pro = true;
-						}
-						else{
-							$current_service['name'] = rtrim( array_shift( $row ) );
-						}
-
-						$current_service['id'] = md5( $categories[$key] . '_' . $current_service['name'] );
-
-						switch( count( $row ) ){
-							case 1:
-								$current_service['master'] = false;
-								if( strpos( $row[0], '[from]' ) !== false ){
-									$current_service['prices'] = [[str_replace( '[from]', '', $row[0] )]];
-									$current_service['variable'] = true;
-									$is_variable_price = true;
-								}
-								else{
-									$current_service['prices'] = [$row];
-								}
-								break;
-                            case 3:
-							case 4:
-								$current_service['master'] = false;
-								$current_service['prices'] = array_chunk( $row, 1 );
-								break;
-							case 2:
-							case 6:
-							case 8:
-								$current_service['master'] = true;
-								$current_service['prices'] = array_chunk( $row, 2 );
-								break;
-						}
-
-						if( $current_service['master'] ){
-							$is_master_option = true;
-						}
-
-						if( !isset( $current_service['variable'] ) ){
-							$current_service['variable'] = false;
-						}
-
-						$current_service['pro'] = $is_pro;
-
-
-						if( $is_subcategory ){
-							$subcategory_services[] = $current_service;
-						}
-						else{
-							$services[] = $current_service;
-						}
-					}
-				}
-			}
-		}
-
-		$category = array(
-			'name'                  => $categories[$key],
-			'is_master_option'      => $is_master_option,
-			'is_variable_price'     => $is_variable_price
-		);
-
-		if( $categories[$key] == 'стрижки/укладки/прически' ||
-		    $categories[$key] == 'свадебные прически' ||
-		    $categories[$key] == 'уходы для волос' ||
-		    $categories[$key] == 'все виды окрашиваний' ||
-		    $categories[$key] == 'уходы после окрашиваний' ){
-			$category['is_hair_services'] = true;
-		}
-		else{
-			$category['is_hair_services'] = false;
-		}
-
-		if( $subcategories ){
-			$category['services'] = $subcategories;
-		}
-		else{
-			$category['services'][] = array(
-				'name'      => $categories[$key],
-				'services'  => $services
-			);
-		}
-
-		$parsed_data[pdp_service_slug_to_key( $categories[$key] )] = $category;
-	}
-
-	return $parsed_data;
+function pdp_google_api_settings(){
+    require PDP_PLUGIN_PATH . 'templates/pricelists-sync.php';
 }
 
 function pdp_get_pricelists_id(){
@@ -262,7 +47,7 @@ function pdp_get_pricelists_id(){
 
 	$data = [];
 
-	foreach ($salons as $salon) {
+	foreach( $salons as $salon ) {
 		$spreadsheet_id = carbon_get_post_meta($salon->ID, 'pricelist_sheet_id');
 		if (!empty($spreadsheet_id)) {
 			$data[] = array(
@@ -279,9 +64,8 @@ function pdp_get_pricelist_id( $salon_id = false ){
 	if( $salon_id ){
 		return carbon_get_post_meta( $salon_id, 'pricelist_sheet_id' );
 	}
-	else{
-		return false;
-	}
+
+	return false;
 }
 
 function pdp_get_salons( $sort = 'ASC' ){
@@ -387,67 +171,139 @@ function pdp_service_slug_to_key( $str ){
 	return str_replace( [' ', '/'], '-', mb_strtolower( pdp_cyr_to_lat( $str ) ) );
 }
 
-add_action('wp_ajax_update_pricelist', 'pdp_ajax_update_pricelist');
-function pdp_ajax_update_pricelist(){
-	$google_api = new PDP_Core_Google();
-	$client = $google_api->get_client();
-	$sheets_service = new Google_Service_Sheets($client);
+/**
+ * Price List Parser
+ */
 
-	$spreadsheet_id = pdp_get_pricelist_id($_POST['id']);
+function pdp_parse_pricelist( $categories, $data ){
+	$parsed_data = [];
 
-	if ($spreadsheet_id) {
-		$ranges = [];
-		$titles = [];
+	foreach( $data as $key => $range ){
+		$category = [];
+		$services = [];
+		$subcategory_services = [];
+		$subcategories = [];
+		$subcategory_title = '';
 
-		$spreadsheet = $sheets_service->spreadsheets->get($spreadsheet_id);
+		$is_subcategory = false;
+		$is_master_option = false;
+		$is_variable_price = false;
 
-		foreach ($spreadsheet->getSheets() as $sheet) {
-			$ranges[] = $sheet['properties']['title'] . '!A:I';
-			$titles[] = rtrim( $sheet['properties']['title'] );
+		foreach( $range as $row ){
+			if( $row[0] != '' ){
+				$row = array_values( array_filter( $row ) );
+
+				if( $row[0] == '[subcategory-begin]' ){
+					$is_subcategory = true;
+				}
+				else if( $row[0] == '[subcategory-end]' ){
+					$subcategories[] = array(
+						'name'      => $subcategory_title,
+						'services'  => $subcategory_services
+					);
+
+					$is_subcategory = false;
+
+					$subcategory_services = [];
+				}
+				else{
+					if( strpos( $row[0], '[subcategory-title]' ) !== false ){
+						$subcategory_title = str_replace( '[subcategory-title]', '', $row[0] );
+					}
+					else{
+						$current_service = [];
+						$is_pro = false;
+
+						if( strpos( $row[0], '[pro]' ) !== false ){
+							$current_service['name_ru'] = str_replace( '[pro]', '', rtrim( array_shift( $row ) ) );
+							$current_service['name_ua'] = str_replace( '[pro]', '', rtrim( array_shift( $row ) ) );
+							$is_pro = true;
+						}
+						else{
+							$current_service['name_ru'] = rtrim( array_shift( $row ) );
+							$current_service['name_ua'] = rtrim( array_shift( $row ) );
+						}
+
+						$current_service['id'] = md5( $categories[$key] . '_' . $current_service['name_ru'] );
+
+						switch( count( $row ) ){
+							case 1:
+								$current_service['master'] = false;
+								if( strpos( $row[0], '[from]' ) !== false ){
+									$current_service['prices'] = [[str_replace( '[from]', '', $row[0] )]];
+									$current_service['variable'] = true;
+									$is_variable_price = true;
+								}
+								else{
+									$current_service['prices'] = [$row];
+								}
+								break;
+							case 3:
+							case 4:
+								$current_service['master'] = false;
+								$current_service['prices'] = array_chunk( $row, 1 );
+								break;
+							case 2:
+							case 6:
+							case 8:
+								$current_service['master'] = true;
+								$current_service['prices'] = array_chunk( $row, 2 );
+								break;
+						}
+
+						if( $current_service['master'] ){
+							$is_master_option = true;
+						}
+
+						if( !isset( $current_service['variable'] ) ){
+							$current_service['variable'] = false;
+						}
+
+						$current_service['pro'] = $is_pro;
+
+
+						if( $is_subcategory ){
+							$subcategory_services[] = $current_service;
+						}
+						else{
+							$services[] = $current_service;
+						}
+					}
+				}
+			}
 		}
 
-		$response = $sheets_service->spreadsheets_values->batchGet($spreadsheet_id, array('ranges' => $ranges))->getValueRanges();
+		$category = array(
+			'name'                  => $categories[$key],
+			'is_master_option'      => $is_master_option,
+			'is_variable_price'     => $is_variable_price
+		);
 
-		$is_updated = update_post_meta($_POST['id'], '_pdp_pricelist', pdp_parse_pricelist( $titles, $response ));
-
-		wp_die(json_encode($is_updated));
-
-		if ($is_updated) {
-			update_post_meta($_POST['id'], '_pdp_pricelist_last_update', date("Y-m-d H:i:s"));
-			wp_die($is_updated);
-		} else {
-			wp_die('Что-то пошло не так или прайслист не изменился.');
+		if( $categories[$key] == 'стрижки/укладки/прически' ||
+		    $categories[$key] == 'свадебные прически' ||
+		    $categories[$key] == 'уходы для волос' ||
+		    $categories[$key] == 'все виды окрашиваний' ||
+		    $categories[$key] == 'уходы после окрашиваний' ){
+			$category['is_hair_services'] = true;
 		}
+		else{
+			$category['is_hair_services'] = false;
+		}
+
+		if( $subcategories ){
+			$category['services'] = $subcategories;
+		}
+		else{
+			$category['services'][] = array(
+				'name'      => $categories[$key],
+				'services'  => $services
+			);
+		}
+
+		$parsed_data[pdp_service_slug_to_key( $categories[$key] )] = $category;
 	}
-}
 
-add_action('wp_ajax_update_pricelists', 'pdp_ajax_update_pricelists');
-function pdp_ajax_update_pricelists(){
-	$google_api = new PDP_Core_Google();
-	$client = $google_api->get_client();
-	$service = new Google_Service_Sheets($client);
-
-	$pricelists = pdp_get_pricelists_id();
-
-	foreach ($pricelists as $pricelist) {
-		$ranges = [];
-		$titles = [];
-		$spreadsheet_id = $pricelist['spreadsheet_id'];
-
-		$spreadsheet = $service->spreadsheets->get($spreadsheet_id);
-
-		foreach ($spreadsheet->getSheets() as $sheet) {
-			$ranges[] = $sheet['properties']['title'] . '!A:I';
-			$titles[] = rtrim( $sheet['properties']['title'] );
-		}
-
-		$response = $service->spreadsheets_values->batchGet($spreadsheet_id, array('ranges' => $ranges))->getValueRanges();
-
-		update_post_meta($pricelist['salon_id'], '_pdp_pricelist', pdp_parse_pricelist( $titles, $response ));
-		update_post_meta($pricelist['salon_id'], '_pdp_pricelist_last_update', date("Y-m-d H:i:s"));
-	}
-
-	wp_die();
+	return $parsed_data;
 }
 
 

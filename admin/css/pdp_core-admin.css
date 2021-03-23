@@ -41,6 +41,7 @@
 
 a.pdp-btn,
 button.pdp-btn {
+    position: relative;
     display: inline-block;
     color: black;
     padding: 4px 16px 6px;
@@ -55,6 +56,23 @@ button.pdp-btn:disabled {
     color: #aaa;
     border-color: #aaa;
     cursor: not-allowed;
+}
+
+a.pdp-btn.loading:before,
+button.pdp-btn.loading:before {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    display: block;
+    top: calc(50% - 8px);
+    left: calc(50% - 8px);
+    width: 16px;
+    height: 16px;
+    border: 4px solid #392BDF;
+    border-top-color: transparent;
+    border-radius: 50%;
+    z-index: 1;
+    animation: loaderSpin 1s infinite linear;
 }
 
 
@@ -168,4 +186,18 @@ h2.pdp-admin-heading {
 
 .pdp-infobox.alert {
     border-color: red;
+}
+
+/**
+ *  Animations
+ */
+
+@keyframes loaderSpin {
+    from {
+        transform: rotateZ(0deg);
+    }
+
+    to {
+        transform: rotateZ(360deg);
+    }
 }

@@ -55,9 +55,8 @@ class PDP_Core_Google{
         if( file_exists( $this->token_path ) ){
             return json_decode( file_get_contents( $this->token_path ), true );
         }
-        else{
-            return false;
-        }
+
+        return false;
     }
 
     private function save_token_to_file(){
