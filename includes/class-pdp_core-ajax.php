@@ -218,51 +218,13 @@ class PDP_Core_Ajax{
 	 */
 
 	public function sync_pricelist(){
-		$google_api = new PDP_Core_Google();
-		$client = $google_api->get_client();
-		$service = new Google_Service_Sheets( $client );
-
-		$spreadsheet_id = pdp_get_pricelist_id( $_POST['id'] );
-		$spreadsheet = $service->spreadsheets->get( $spreadsheet_id );
-
-		$ranges = [];
-		$titles = [];
-
-		foreach( $spreadsheet->getSheets() as $sheet ){
-			$ranges[] = $sheet['properties']['title'] . '!A:I';
-			$titles[] = rtrim( $sheet['properties']['title'] );
-		}
-
-		$response = $service->spreadsheets_values->batchGet( $spreadsheet_id, array( 'ranges' => $ranges ) )->getValueRanges();
-
-		update_post_meta( $_POST['id'], '_pdp_pricelist', pdp_parse_pricelist( $titles, $response ) );
-		update_post_meta( $_POST['id'], '_pdp_pricelist_last_update', date( "Y-m-d H:i:s" ) );
+		pdp_fetch_pricelists( $_POST['id'] );
 
 		$this->message( true, 'Sync single.' );
 	}
 
 	public function sync_pricelists(){
-		$google_api = new PDP_Core_Google();
-		$client = $google_api->get_client();
-		$service = new Google_Service_Sheets( $client );
-
-		foreach( pdp_get_pricelists_id() as $pricelist ){
-			$ranges = [];
-			$titles = [];
-			$spreadsheet_id = $pricelist['spreadsheet_id'];
-
-			$spreadsheet = $service->spreadsheets->get( $spreadsheet_id );
-
-			foreach( $spreadsheet->getSheets() as $sheet ){
-				$ranges[] = $sheet['properties']['title'] . '!A:I';
-				$titles[] = rtrim( $sheet['properties']['title'] );
-			}
-
-			$response = $service->spreadsheets_values->batchGet( $spreadsheet_id, array( 'ranges' => $ranges ) )->getValueRanges();
-
-			update_post_meta( $pricelist['salon_id'], '_pdp_pricelist', pdp_parse_pricelist( $titles, $response ) );
-			update_post_meta( $pricelist['salon_id'], '_pdp_pricelist_last_update', date( "Y-m-d H:i:s" ) );
-		}
+		pdp_fetch_pricelists();
 
 		$this->message( true, 'Sync all.' );
 	}

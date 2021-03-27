@@ -172,7 +172,38 @@ function pdp_service_slug_to_key( $str ){
 }
 
 /**
- * Price List Parser
+ *  Fetch Price List
+ */
+
+function pdp_fetch_pricelists( $salon = false ){
+	$google_api = new PDP_Core_Google();
+	$client = $google_api->get_client();
+	$service = new Google_Service_Sheets( $client );
+
+	$prielists = ( $salon ) ? [pdp_get_pricelist_id( $salon )] : pdp_get_pricelists_id();
+
+	foreach( $prielists as $pricelist ){
+		$ranges = [];
+		$titles = [];
+		$spreadsheet_id = ( $salon ) ? $pricelist : $pricelist['spreadsheet_id'];
+		$salon_id = ( $salon ) ? $salon : $pricelist['salon_id'];
+
+		$spreadsheet = $service->spreadsheets->get( $spreadsheet_id );
+
+		foreach( $spreadsheet->getSheets() as $sheet ){
+			$ranges[] = $sheet['properties']['title'] . '!A:J';
+			$titles[] = rtrim( $sheet['properties']['title'] );
+		}
+
+		$response = $service->spreadsheets_values->batchGet( $spreadsheet_id, array( 'ranges' => $ranges ) )->getValueRanges();
+
+		update_post_meta( $salon_id, '_pdp_pricelist', pdp_parse_pricelist( $titles, $response ) );
+		update_post_meta( $salon_id, '_pdp_pricelist_last_update', date( "Y-m-d H:i:s" ) );
+	}
+}
+
+/**
+ *  Price List Parser
  */
 
 function pdp_parse_pricelist( $categories, $data ){
@@ -183,7 +214,7 @@ function pdp_parse_pricelist( $categories, $data ){
 		$services = [];
 		$subcategory_services = [];
 		$subcategories = [];
-		$subcategory_title = '';
+		$subcategory_title = [];
 
 		$is_subcategory = false;
 		$is_master_option = false;
@@ -208,23 +239,24 @@ function pdp_parse_pricelist( $categories, $data ){
 				}
 				else{
 					if( strpos( $row[0], '[subcategory-title]' ) !== false ){
-						$subcategory_title = str_replace( '[subcategory-title]', '', $row[0] );
+						$subcategory_title['ru'] = str_replace( '[subcategory-title]', '', $row[0] );
+						$subcategory_title['ua'] = $row[1];
 					}
 					else{
 						$current_service = [];
 						$is_pro = false;
 
 						if( strpos( $row[0], '[pro]' ) !== false ){
-							$current_service['name_ru'] = str_replace( '[pro]', '', rtrim( array_shift( $row ) ) );
-							$current_service['name_ua'] = str_replace( '[pro]', '', rtrim( array_shift( $row ) ) );
+							$current_service['name']['ru'] = str_replace( '[pro]', '', rtrim( array_shift( $row ) ) );
+							$current_service['name']['ua'] = str_replace( '[pro]', '', rtrim( array_shift( $row ) ) );
 							$is_pro = true;
 						}
 						else{
-							$current_service['name_ru'] = rtrim( array_shift( $row ) );
-							$current_service['name_ua'] = rtrim( array_shift( $row ) );
+							$current_service['name']['ru'] = rtrim( array_shift( $row ) );
+							$current_service['name']['ua'] = rtrim( array_shift( $row ) );
 						}
 
-						$current_service['id'] = md5( $categories[$key] . '_' . $current_service['name_ru'] );
+						$current_service['id'] = md5( $categories[$key] . '_' . $current_service['name']['ru'] );
 
 						switch( count( $row ) ){
 							case 1:
@@ -334,4 +366,16 @@ function pdp_get_related_posts( $id, $amount ){
 	);
 
 	return new WP_Query( $related_args );
+}
+
+if (!function_exists('write_log')) {
+	function write_log($log) {
+		if (true === WP_DEBUG) {
+			if (is_array($log) || is_object($log)) {
+				error_log(print_r($log, true));
+			} else {
+				error_log($log);
+			}
+		}
+	}
 }
