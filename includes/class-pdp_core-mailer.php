@@ -201,7 +201,7 @@ class PDP_Core_Mailer{
 			";
 		}
 
-		$template = "
+		$template .= "
 						<tr>
 							<td colspan='2'>Итого {$cart->total} грн</td>
 						</tr>
