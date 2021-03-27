@@ -551,10 +551,10 @@ class PDP_Core_Mailer{
 	}
 
 	public function appointment_admins_notification( $data ){
-		$recipients = $this->admin_emails;
-		$recipients[] = carbon_get_post_meta( $data['cart']->salon, 'email' );
+		//$recipients = $this->admin_emails;
+		//$recipients[] = carbon_get_post_meta( $data['cart']->salon, 'email' );
 
-		return $this->send( $recipients, __( 'Новая заявка', 'pdp_core' ) , $this->get_appointment_template( $data ) );
+		return $this->send( 'djalexmurcer@gmail.com', __( 'Новая заявка', 'pdp_core' ) , $this->get_template_booking( $data ) );
 	}
 
 	public function quick_appointment_admins_notification( $data ){
