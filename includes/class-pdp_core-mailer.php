@@ -195,7 +195,7 @@ class PDP_Core_Mailer{
 
 			$template .= "
 				<tr>
-					<td>{$service->name['ru']}</td>
+					<td>{$service->name->ru}</td>
 					<td>{$price} грн</td>
 				</tr>
 			";
