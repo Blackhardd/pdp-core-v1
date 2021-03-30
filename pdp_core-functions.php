@@ -368,6 +368,12 @@ function pdp_get_related_posts( $id, $amount ){
 	return new WP_Query( $related_args );
 }
 
+function pdp_get_template( $path = '' ){
+	if( $path && is_string( $path ) ) {
+		require( PDP_PLUGIN_PATH . 'templates/' . $path );
+	}
+}
+
 if (!function_exists('write_log')) {
 	function write_log($log) {
 		if (true === WP_DEBUG) {
