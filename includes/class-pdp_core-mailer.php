@@ -1,9 +1,7 @@
 <?php
 
 class PDP_Core_Mailer{
-	private $site_logo;
 	private $admin_emails;
-	private $hair_lengths;
 
 	public function __construct(){
 		$this->init();
@@ -34,7 +32,7 @@ class PDP_Core_Mailer{
 		ob_start();
 		pdp_get_template( 'emails/booking/body.php', ['data' => $data, 'salon_name' => $salon_name] );
 
-		if( $is_simple ){
+		if( !$is_simple ){
 			echo $this->get_template_cart( $data['cart'] );
 		}
 		else{
@@ -48,19 +46,19 @@ class PDP_Core_Mailer{
 
 	private function get_template_simple_cart( $service ){
 		ob_start();
-		pdp_get_template( 'emails/booking/simple-cart.php' );
+		pdp_get_template( 'emails/booking/simple-cart.php', ['service' => $service] );
 		return ob_get_clean();
 	}
 
 	private function get_template_cart( $cart ){
 		ob_start();
-		pdp_get_template( 'emails/booking/cart.php' );
+		pdp_get_template( 'emails/booking/cart.php', ['cart' => $cart] );
 		return ob_get_clean();
 	}
 
 	private function get_template_gift_card( $data ){
 		ob_start();
-		pdp_get_template( 'emails/gift-card.php' );
+		pdp_get_template( 'emails/gift-card.php', ['data' => $data] );
 		$template = ob_get_clean();
 
 		return $this->get_template_base( '', $template );
@@ -69,7 +67,7 @@ class PDP_Core_Mailer{
 	private function get_template_vacancy_application( $data ){
 		$data = $data;
 		ob_start();
-		pdp_get_template( 'emails/vacancy-application.php' );
+		pdp_get_template( 'emails/vacancy-application.php', ['data' => $data] );
 		$template = ob_get_clean();
 
 		return $this->get_template_base( '', $template );

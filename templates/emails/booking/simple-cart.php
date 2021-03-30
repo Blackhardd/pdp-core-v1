@@ -5,7 +5,7 @@
 				<td><?=__( 'Категория услуг', 'pdp_core' ); ?></td>
 			</tr>
 			<tr>
-				<td><?=$service; ?></td>
+				<td><?=$data['service']; ?></td>
 			</tr>
 		</table>
 	</td>
