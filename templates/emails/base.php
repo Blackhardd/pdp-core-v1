@@ -61,7 +61,7 @@
 			<tr>
 				<td>
 					<table width="100%" style="padding: 20px; border-spacing: 0;">
-						<?=$content; ?>
+						<?=$data['content']; ?>
 					</table>
 				</td>
 			</tr>

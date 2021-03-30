@@ -25,7 +25,7 @@ class PDP_Core_Mailer{
 
 	private function get_template_base( $title, $content ){
 		ob_start();
-		pdp_get_template( 'emails/base.php' );
+		pdp_get_template( 'emails/base.php', ['title' => $title,'content' => $content] );
 		return ob_get_clean();
 	}
 
