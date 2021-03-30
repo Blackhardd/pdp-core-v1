@@ -1,7 +1,6 @@
 <?php
 
 class PDP_Core_Mailer{
-	private $site_url;
 	private $site_logo;
 	private $admin_emails;
 	private $hair_lengths;
@@ -11,9 +10,6 @@ class PDP_Core_Mailer{
 	}
 
 	private function init(){
-		$this->site_url = get_option( 'siteurl' );
-		$this->site_logo = wp_get_attachment_image_src( get_theme_mod( 'custom_logo' ), 'full' );
-
 		$this->admin_emails = array(
 			get_option( 'admin_email' )
 		);
