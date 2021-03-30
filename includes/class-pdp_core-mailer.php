@@ -14,13 +14,6 @@ class PDP_Core_Mailer{
 			get_option( 'admin_email' )
 		);
 
-		$this->hair_lengths = array(
-			__( 'от 5-15 см', 'pdp' ),
-			__( 'от 15 - 25 см (выше плеч, каре, боб)', 'pdp' ),
-			__( 'от 25 - 40 см (ниже плеч/выше лопаток)', 'pdp' ),
-			__( 'от 40 - 60 см (ниже лопаток)', 'pdp' )
-		);
-
 		add_filter( 'wp_mail_content_type', function( $content_type ){
 			return 'text/html';
 		} );
@@ -32,16 +25,14 @@ class PDP_Core_Mailer{
 
 	private function get_template_base( $title, $content ){
 		ob_start();
-		$title = $title;
-		$content = $content;
 		pdp_get_template( 'emails/base.php' );
 		return ob_get_clean();
 	}
 
 	private function get_template_booking( $data, $is_simple = false ){
-		ob_start();
 		$salon_name = ( !$is_simple ) ? PDP_Core_Salon::get_by_id( $data['cart']->salon )->post_title : $data['salon'];
-		pdp_get_template( 'emails/booking/body.php' );
+		ob_start();
+		pdp_get_template( 'emails/booking/body.php', ['data' => $data, 'salon_name' => $salon_name] );
 
 		if( $is_simple ){
 			echo $this->get_template_cart( $data['cart'] );
@@ -57,21 +48,18 @@ class PDP_Core_Mailer{
 
 	private function get_template_simple_cart( $service ){
 		ob_start();
-		$service = $service;
 		pdp_get_template( 'emails/booking/simple-cart.php' );
 		return ob_get_clean();
 	}
 
 	private function get_template_cart( $cart ){
 		ob_start();
-		$cart = $cart;
 		pdp_get_template( 'emails/booking/cart.php' );
 		return ob_get_clean();
 	}
 
 	private function get_template_gift_card( $data ){
 		ob_start();
-		$data = $data;
 		pdp_get_template( 'emails/gift-card.php' );
 		$template = ob_get_clean();
 
@@ -79,8 +67,8 @@ class PDP_Core_Mailer{
 	}
 
 	private function get_template_vacancy_application( $data ){
-		ob_start();
 		$data = $data;
+		ob_start();
 		pdp_get_template( 'emails/vacancy-application.php' );
 		$template = ob_get_clean();
 

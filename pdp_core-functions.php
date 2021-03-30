@@ -368,19 +368,33 @@ function pdp_get_related_posts( $id, $amount ){
 	return new WP_Query( $related_args );
 }
 
-function pdp_get_template( $path = '' ){
+function pdp_get_template( $path = '', $data = [] ){
 	if( $path && is_string( $path ) ) {
 		require( PDP_PLUGIN_PATH . 'templates/' . $path );
 	}
 }
 
-if (!function_exists('write_log')) {
-	function write_log($log) {
-		if (true === WP_DEBUG) {
-			if (is_array($log) || is_object($log)) {
-				error_log(print_r($log, true));
-			} else {
-				error_log($log);
+function pdp_get_hair_length_title( $id = false ){
+	$lengths = array(
+		__( 'от 5-15 см', 'pdp' ),
+		__( 'от 15 - 25 см (выше плеч, каре, боб)', 'pdp' ),
+		__( 'от 25 - 40 см (ниже плеч/выше лопаток)', 'pdp' ),
+		__( 'от 40 - 60 см (ниже лопаток)', 'pdp' )
+	);
+
+	if( $id ){
+		return $lengths[$id];
+	}
+}
+
+if( !function_exists( 'write_log' ) ){
+	function write_log( $log ){
+		if( true === WP_DEBUG ){
+			if( is_array( $log ) || is_object( $log ) ){
+				error_log( print_r( $log, true ) );
+			}
+			else{
+				error_log( $log );
 			}
 		}
 	}
