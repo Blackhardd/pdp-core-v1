@@ -1,22 +1,15 @@
 <?php
 
 class PDP_Core_Salon {
-	private $google_api;
-	private $google_client;
-	private $google_sheets;
-
-	public function __construct(){
-
-	}
-
-	public static function get_all(){
+	public static function get_all( WP_REST_Request $request ){
         $data = [];
 
         $salons = get_posts(
             array(
                 'numberposts'   => -1,
                 'post_type'     => 'salon',
-                'order'         => 'ASC'
+                'order'         => 'ASC',
+	            'lang'          => $request->get_param( 'lang' )
             )
         );
 
@@ -75,11 +68,5 @@ class PDP_Core_Salon {
         }
 
         return $data;
-    }
-
-    private function load_google(){
-		$this->google_api = new PDP_Core_Google();
-		$this->google_client = $this->google_api->get_client();
-		$this->google_sheets = new Google_Service_Sheets( $this->google_client );
     }
 }
