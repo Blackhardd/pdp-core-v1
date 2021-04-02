@@ -61,8 +61,11 @@ class PDP_Core_Salon {
 
         foreach( $categories_raw as $category ){
             $data[] = array(
+	            'name'     => array(
+	            	'ru'    => $category['title'],
+		            'ua'    => $category['title_ua']
+	            ),
                 'img'       => wp_get_attachment_image( $category['cover'], 'services-slider-thumb' ),
-                'title'     => $category['title'],
                 'slug'      => pdp_service_slug_to_key( $category['slug'] )
             );
         }

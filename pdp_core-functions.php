@@ -12,7 +12,7 @@ function pdp_carbon_fields_load()
 	\Carbon_Fields\Carbon_Fields::boot();
 }
 
-add_action('admin_menu', function () {
+add_action('admin_menu', function(){
 	add_menu_page(
 		'Настройки сайта',
 		'Pied-De-Poule',
@@ -210,7 +210,7 @@ function pdp_parse_pricelist( $categories, $data ){
 	$parsed_data = [];
 
 	foreach( $data as $key => $range ){
-		$category = [];
+		$category_names = [];
 		$services = [];
 		$subcategory_services = [];
 		$subcategories = [];
@@ -224,7 +224,11 @@ function pdp_parse_pricelist( $categories, $data ){
 			if( $row[0] != '' ){
 				$row = array_values( array_filter( $row ) );
 
-				if( $row[0] == '[subcategory-begin]' ){
+				if( strpos( $row[0], '[category]' ) !== false ){
+					$category_names['ru'] = str_replace( '[category]', '', rtrim( array_shift( $row ) ) );
+					$category_names['ua'] = rtrim( array_shift( $row ) );
+				}
+				else if( $row[0] == '[subcategory-begin]' ){
 					$is_subcategory = true;
 				}
 				else if( $row[0] == '[subcategory-end]' ){
@@ -327,7 +331,7 @@ function pdp_parse_pricelist( $categories, $data ){
 		}
 		else{
 			$category['services'][] = array(
-				'name'      => $categories[$key],
+				'name'      => $category_names,
 				'services'  => $services
 			);
 		}
