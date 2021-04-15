@@ -25,7 +25,7 @@
 				</tr>
 			<?php endforeach; ?>
 			<tr>
-				<td colspan="2"><?=__( 'Итого', 'pdp_core' ); ?> <?=$data['cart']->total; ?> грн</td>
+				<td colspan="2"><?=__( 'Итого', 'pdp_core' ); ?> <?=$data['total']; ?> грн</td>
 			</tr>
 		</table>
 	</td>

@@ -21,7 +21,7 @@
 		}
 		.wrapper {
 			width: 100%;
-			padding-bottom: 40px;
+			padding: 40px 0;
 			table-layout: fixed;
 			background: #f6f9fc;
 		}
