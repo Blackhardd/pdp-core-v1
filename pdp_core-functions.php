@@ -386,7 +386,7 @@ function pdp_get_hair_length_title( $id = false ){
 		__( 'от 40 - 60 см (ниже лопаток)', 'pdp' )
 	);
 
-	if( $id ){
+	if( $id !== false ){
 		return $lengths[$id];
 	}
 }

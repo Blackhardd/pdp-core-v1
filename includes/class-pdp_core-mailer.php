@@ -33,7 +33,7 @@ class PDP_Core_Mailer{
 		pdp_get_template( 'emails/booking/body.php', ['data' => $data, 'salon_name' => $salon_name] );
 
 		if( !$is_simple ){
-			echo $this->get_template_cart( $data['cart'] );
+			echo $this->get_template_cart( $data['cart'], $data['total'] );
 		}
 		else{
 			echo $this->get_template_simple_cart( $data['service'] );
@@ -50,9 +50,9 @@ class PDP_Core_Mailer{
 		return ob_get_clean();
 	}
 
-	private function get_template_cart( $cart ){
+	private function get_template_cart( $cart, $total ){
 		ob_start();
-		pdp_get_template( 'emails/booking/cart.php', ['cart' => $cart] );
+		pdp_get_template( 'emails/booking/cart.php', ['cart' => $cart, 'total' => $total] );
 		return ob_get_clean();
 	}
 

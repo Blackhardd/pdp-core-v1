@@ -33,7 +33,7 @@
                     <td><h4><?=__( 'Дополнительная информация', 'pdp_core' ); ?>:</h4></td>
                 </tr>
                 <?=( $data['data']['cart']->master_option ) ? "<tr><td>Старший мастер.</td></tr>" : ''; ?>
-                <?=( $data['data']['is_hair_services'] ) ? "<tr><td>Длина волос {$hair_length}.</td></tr>" : ''; ?>
+                <?=( $data['data']['is_hair_services'] == 'true' ) ? "<tr><td>Длина волос {$hair_length}.</td></tr>" : ''; ?>
             </table>
         </td>
     </tr>
