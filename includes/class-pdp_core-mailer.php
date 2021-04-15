@@ -8,8 +8,11 @@ class PDP_Core_Mailer{
 	}
 
 	private function init(){
-		$this->admin_emails = array(
-			get_option( 'admin_email' )
+		$additional_recipients = explode( ',' , carbon_get_theme_option( 'email_recipients' ) );
+
+		$this->admin_emails = array_merge(
+			[get_option( 'admin_email' )],
+			$additional_recipients
 		);
 
 		add_filter( 'wp_mail_content_type', function( $content_type ){
