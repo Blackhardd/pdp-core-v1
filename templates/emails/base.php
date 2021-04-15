@@ -16,6 +16,9 @@
 		td {
 			padding: 0;
 		}
+        h4{
+            margin: 0 0 10px;
+        }
 		img {
 			border: 0;
 		}

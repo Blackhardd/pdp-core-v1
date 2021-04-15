@@ -12,7 +12,7 @@ class PDP_Core_Ajax{
         $this->register_admin_actions();
     }
 
-    private function message( $status, $message ){
+    private function message( $status, $message = '' ){
         wp_die( json_encode( array(
         	'status'	=> $status,
 	        'message'	=> $message
@@ -45,6 +45,7 @@ class PDP_Core_Ajax{
             'category_booking',
 			'service_booking',
             'gift_card_order',
+            'school_application',
             'vacancy_application',
             'add_post_like'
         );
@@ -130,16 +131,30 @@ class PDP_Core_Ajax{
 		}
 	}
 
+	public function school_application(){
+		if( $this->check_nonce( 'school_application' ) ){
+			$data = array(
+				'name'      => $_POST['name'],
+				'phone'     => $_POST['phone'],
+				'email'     => $_POST['email'],
+				'service'   => $_POST['service']
+			);
+
+			$this->message( $this->mailer->school_application_notification( $data ), sprintf( '%s<br>%s', __( 'Спасибо за заявку!', 'pdp_core' ), __( 'В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) ) );
+		}
+	}
+
 	public function vacancy_application(){
 		if( $this->check_nonce( 'vacancy_application' ) ){
 			$data = array(
 				'name'      => $_POST['name'],
 				'phone'     => $_POST['phone'],
 				'email'     => $_POST['email'],
+				'vacancy'   => $_POST['vacancy'],
 				'message'   => $_POST['message']
 			);
 
-			if( isset( $_FILES['attachment'] ) ){
+			if( $_FILES['attachment']['size'] != 0 ){
 				if( !function_exists( 'wp_handle_upload' ) ){
 					require_once( ABSPATH . 'wp-admin/includes/file.php' );
 				}
@@ -147,13 +162,13 @@ class PDP_Core_Ajax{
 				$attachment = wp_handle_upload( $_FILES['attachment'], array( 'test_form' => false ) );
 
 				if( $attachment && empty( $attachment['error'] ) ){
-					$this->message( $this->mailer->vacancy_application_notification( $data, $attachment['file'] ) );
+					$this->message( $this->mailer->vacancy_application_notification( $data, $attachment['file'] ), __( 'Ваша заявка была отправлена', 'pdp_core' ) );
 				}
 
 				$this->message( false, __( 'Файл не был загружен.', 'pdp_core' ) );
 			}
 
-			$this->message( $this->mailer->vacancy_application_notification( $data, array() ), __( 'Файл был успешно загружен.', 'pdp_core' ) );
+			$this->message( $this->mailer->vacancy_application_notification( $data, array() ), __( 'Ваша заявка была отправлена', 'pdp_core' ) );
 		}
 	}
 

@@ -1,16 +1,4 @@
 <tr>
-    <td>
-        <table width="100%" style="margin-bottom: 30px; border-spacing: 0">
-            <tr>
-                <td><h4><?=__( 'Вакансия', 'pdp_core' ); ?>:</h4></td>
-            </tr>
-            <tr>
-                <td><?=$data['data']['vacancy']; ?></td>
-            </tr>
-        </table>
-    </td>
-</tr>
-<tr>
 	<td>
 		<table width="100%" style="margin-bottom: 30px; border-spacing: 0">
 			<tr>
@@ -28,10 +16,10 @@
 	<td>
 		<table width="100%" style="border-spacing: 0">
 			<tr>
-				<td><h4><?=__( 'Сообщение', 'pdp_core' ); ?>:</h4></td>
+				<td><h4><?=__( 'Курс', 'pdp_core' ); ?>:</h4></td>
 			</tr>
 			<tr>
-				<td><?=$data['data']['message']; ?></td>
+				<td><?=$data['data']['service']; ?></td>
 			</tr>
 		</table>
 	</td>

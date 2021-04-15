@@ -2,7 +2,7 @@
 	<td>
 		<table width="100%" style="border-spacing: 0">
 			<tr>
-				<td><?=__( 'Категория услуг', 'pdp_core' ); ?></td>
+				<td><h4><?=__( 'Категория услуг', 'pdp_core' ); ?>:</h4></td>
 			</tr>
 			<tr>
 				<td><?=$data['service']; ?></td>

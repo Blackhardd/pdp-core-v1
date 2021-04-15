@@ -28,7 +28,7 @@ class PDP_Core_Mailer{
 	}
 
 	private function get_template_booking( $data, $is_simple = false ){
-		$salon_name = ( !$is_simple ) ? PDP_Core_Salon::get_by_id( $data['cart']->salon )->post_title : $data['salon'];
+		$salon_name = PDP_Core_Salon::get_by_id( ( !$is_simple ) ? $data['cart']->salon : $data['salon'] )->post_title;
 		ob_start();
 		pdp_get_template( 'emails/booking/body.php', ['data' => $data, 'salon_name' => $salon_name] );
 
@@ -59,6 +59,14 @@ class PDP_Core_Mailer{
 	private function get_template_gift_card( $data ){
 		ob_start();
 		pdp_get_template( 'emails/gift-card.php', ['data' => $data] );
+		$template = ob_get_clean();
+
+		return $this->get_template_base( '', $template );
+	}
+
+	private function get_template_school_application( $data ){
+		ob_start();
+		pdp_get_template( 'emails/school-application.php', ['data' => $data] );
 		$template = ob_get_clean();
 
 		return $this->get_template_base( '', $template );
@@ -100,6 +108,10 @@ class PDP_Core_Mailer{
 
 	public function gift_card_notification( $data ){
 		return $this->send_to_admins( __( 'Заказ подарочного сертификата', 'pdp_core' ) , $this->get_template_gift_card( $data ) );
+	}
+
+	public function school_application_notification( $data ){
+		return $this->send_to_admins( __( 'Заявка на обучение', 'pdp_core' ) , $this->get_template_school_application( $data ) );
 	}
 
 	public function vacancy_application_notification( $data, $attachment ){
