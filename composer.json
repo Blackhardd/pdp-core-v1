@@ -15,6 +15,7 @@
     },
     "extra": {
         "google/apiclient-services": [
+            "Oauth2",
             "Drive",
             "Sheets",
             "Docs"

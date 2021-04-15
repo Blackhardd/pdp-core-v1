@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'b0c84ea546da0a7891c50e87f2c4aaf039f95afc',
+    'reference' => 'd2bf3b8a583fcb6070b88a25d4f619c6424139a7',
     'name' => 'blackhardd/pdp_core',
   ),
   'versions' => 
@@ -18,7 +18,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'b0c84ea546da0a7891c50e87f2c4aaf039f95afc',
+      'reference' => 'd2bf3b8a583fcb6070b88a25d4f619c6424139a7',
     ),
     'firebase/php-jwt' => 
     array (
