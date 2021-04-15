@@ -86,21 +86,21 @@ class PDP_Core_Mailer{
 
 	public function booking_notification( $data ){
 		$recipients = $this->admin_emails;
-		//$recipients[] = carbon_get_post_meta( $data['cart']->salon, 'email' );
+		$recipients[] = carbon_get_post_meta( $data['cart']->salon, 'email' );
 
 		return $this->send_to_admins( __( 'Новая заявка', 'pdp_core' ) , $this->get_template_booking( $data ) );
 	}
 
 	public function simple_booking_notification( $data ){
 		$recipients = $this->admin_emails;
-		//$recipients[] = carbon_get_post_meta( $data['salon'], 'email' );
+		$recipients[] = carbon_get_post_meta( $data['salon'], 'email' );
 
 		return $this->send_to_admins( __( 'Новая заявка', 'pdp_core' ) , $this->get_template_booking( $data, true ) );
 	}
 
 	public function service_booking_notification( $data ){
 		$recipients = $this->admin_emails;
-		//$recipients[] = carbon_get_post_meta( $data['salon'], 'email' );
+		$recipients[] = carbon_get_post_meta( $data['salon'], 'email' );
 
 		return $this->send_to_admins( __( 'Новая заявка', 'pdp_core' ) , $this->get_template_booking( $data, true ) );
 	}
