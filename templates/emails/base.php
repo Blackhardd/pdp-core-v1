@@ -51,7 +51,7 @@
 					<table width="100%" style="border-spacing: 0; background: #392BDF;">
 						<tr>
 							<td style="padding: 10px; text-align: center;">
-								<a href="<?=get_option( 'siteurl' ); ?>"><img src="<?=wp_get_attachment_image_src( get_theme_mod( 'custom_logo' ), 'full' ); ?>" alt="Logo" title="PIED-DE-POULE"></a>
+								<a href="<?=get_option( 'siteurl' ); ?>"><img src="<?=wp_get_attachment_image_url( carbon_get_theme_option( 'email_logo' ), 'full' ); ?>" alt="Logo" title="PIED-DE-POULE"></a>
 							</td>
 						</tr>
 					</table>

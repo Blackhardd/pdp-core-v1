@@ -2,7 +2,7 @@
 	<td>
 		<table width="100%" style="border-spacing: 0">
 			<tr>
-				<td colspan="2"><?=__( 'Услуги', 'pdp_core' ); ?></td>
+				<td colspan="2"><h4><?=__( 'Услуги', 'pdp_core' ); ?></h4></td>
 			</tr>
 			<?php foreach( $data['cart']->items as $service ) :
 				$price = 0;
