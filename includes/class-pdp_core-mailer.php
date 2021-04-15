@@ -8,7 +8,7 @@ class PDP_Core_Mailer{
 	}
 
 	private function init(){
-		$additional_recipients = explode( ',' , carbon_get_theme_option( 'email_recipients' ) );
+		$additional_recipients = explode( ',' , get_option( '_email_recipients' ) );
 
 		$this->admin_emails = array_merge(
 			[get_option( 'admin_email' )],
