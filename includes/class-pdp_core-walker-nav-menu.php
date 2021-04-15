@@ -60,11 +60,8 @@ class PDP_Core_Walker_Nav_Menu extends Walker_Nav_Menu {
          * Генерируем атрибуты Vue
          */
         $vue = '';
-        if( $args->walker->has_children && $item->url == '#' ){
-            $vue .= ' @click="showSubMenu(' . $item->ID . ')" :class="{ active: activeSubMenu == ' . $item->ID . ' }"';
-        }
 
-        /*
+        /**
          * Генерируем элемент меню
          */
         $output .= $indent . '<li' . $id . $value . $class_names . $vue . '>';
