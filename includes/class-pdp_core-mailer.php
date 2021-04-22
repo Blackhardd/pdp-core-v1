@@ -20,8 +20,12 @@ class PDP_Core_Mailer{
 		} );
 	}
 
-	private function send_to_admins( $subject, $message, $attachments = array(), $recipients = false ){
-		return wp_mail( $subject, $message, '', $attachments, ( $recipients ) ? $recipients : $this->admin_emails );
+	private function send_to_admins( $subject, $message, $attachments = array(), $recipients = array() ){
+		if( empty( $recipients ) ){
+			return wp_mail( $subject, $message, '', $attachments, $this->admin_emails );
+		}
+
+		return wp_mail( $subject, $message, '', $attachments, $recipients );
 	}
 
 	private function get_template_base( $title, $content ){
