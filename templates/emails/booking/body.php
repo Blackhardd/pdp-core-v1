@@ -1,10 +1,10 @@
-<?php if( isset( $data['page_title'] ) && isset( $data['page_url'] ) ) : ?>
+<?php if( isset( $data['data']['page_title'] ) && isset( $data['data']['page_url'] ) ) : ?>
     <tr>
         <td>
             <table width="100%" style="margin-bottom: 30px; border-spacing: 0">
                 <tr>
                     <td><h4 style="margin: 0;"><?=__( 'Страница', 'pdp_core' ); ?>:</h4></td>
-                    <td><a href="<?=$data['page_url']; ?>"><?=$data['page_title']; ?></a></td>
+                    <td><a href="<?=$data['data']['page_url']; ?>"><?=$data['data']['page_title']; ?></a></td>
                 </tr>
             </table>
         </td>
