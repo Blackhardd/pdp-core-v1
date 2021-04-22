@@ -20,8 +20,12 @@ class PDP_Core_Mailer{
 		} );
 	}
 
-	private function send_to_admins( $subject, $message, $attachments = array() ){
-		return wp_mail( $this->admin_emails, $subject, $message, '', $attachments );
+	private function send_to_admins( $subject, $message, $attachments = array(), $recipients = array() ){
+		if( empty( $recipients ) ){
+			return wp_mail( $this->admin_emails, $subject, $message, '', $attachments );
+		}
+
+		return wp_mail( $recipients, $subject, $message, '', $attachments );
 	}
 
 	private function get_template_base( $title, $content ){
@@ -86,35 +90,38 @@ class PDP_Core_Mailer{
 
 	public function booking_notification( $data ){
 		$recipients = $this->admin_emails;
-		$recipients[] = carbon_get_post_meta( $data['cart']->salon, 'email' );
+		array_merge( $recipients, pdp_get_salon_recipients( $data['cart']->salon ) );
 
-		return $this->send_to_admins( __( 'Новая запись', 'pdp_core' ) , $this->get_template_booking( $data ) );
+		return $this->send_to_admins( __( 'Новая запись', 'pdp_core' ) , $this->get_template_booking( $data ), array(), $recipients );
 	}
 
 	public function simple_booking_notification( $data ){
 		$recipients = $this->admin_emails;
-		$recipients[] = carbon_get_post_meta( $data['salon'], 'email' );
+		array_merge( $recipients, pdp_get_salon_recipients( $data['salon'] ) );
 
-		return $this->send_to_admins( __( 'Заявка', 'pdp_core' ) . " | {$data['page_title']}" , $this->get_template_booking( $data, true ) );
+		return $this->send_to_admins( __( 'Заявка', 'pdp_core' ) . " | {$data['page_title']}", $this->get_template_booking( $data, true ), array(), $recipients );
 	}
 
 	public function service_booking_notification( $data ){
 		$recipients = $this->admin_emails;
-		$recipients[] = carbon_get_post_meta( $data['salon'], 'email' );
+		array_merge( $recipients, pdp_get_salon_recipients( $data['salon'] ) );
 
-		return $this->send_to_admins( __( 'Заявка', 'pdp_core' ) . " | {$data['page_title']}" , $this->get_template_booking( $data, true ) );
+		return $this->send_to_admins( __( 'Заявка', 'pdp_core' ) . " | {$data['page_title']}", $this->get_template_booking( $data, true ), array(), $recipients );
 	}
 
 	public function category_booking_notification( $data ){
-		return $this->send_to_admins( __( 'Заявка', 'pdp_core' ) . " | {$data['page_title']}" , $this->get_template_booking( $data, true ) );
+		$recipients = $this->admin_emails;
+		array_merge( $recipients, pdp_get_salon_recipients( $data['salon'] ) );
+
+		return $this->send_to_admins( __( 'Заявка', 'pdp_core' ) . " | {$data['page_title']}", $this->get_template_booking( $data, true ), array(), $recipients );
 	}
 
 	public function gift_card_notification( $data ){
-		return $this->send_to_admins( __( 'Заказ подарочного сертификата', 'pdp_core' ) , $this->get_template_gift_card( $data ) );
+		return $this->send_to_admins( __( 'Заказ подарочного сертификата', 'pdp_core' ), $this->get_template_gift_card( $data ) );
 	}
 
 	public function school_application_notification( $data ){
-		return $this->send_to_admins( __( 'Заявка на обучение', 'pdp_core' ) , $this->get_template_school_application( $data ) );
+		return $this->send_to_admins( __( 'Заявка на обучение', 'pdp_core' ), $this->get_template_school_application( $data ) );
 	}
 
 	public function vacancy_application_notification( $data, $attachment ){

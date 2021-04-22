@@ -86,7 +86,8 @@ class PDP_Core_CPT {
 	            Field::make( 'text', 'contacts_title', __( 'Заголовок для контактов', 'pdp_core' ) )
 	                 ->set_width( 50 ),
                 Field::make( 'text', 'pricelist_sheet_id', __( 'ID таблицы прайслиста', 'pdp_core' ) )
-                    ->set_width( 100 )
+                    ->set_width( 100 ),
+	            Field::make( 'textarea', 'notification_recipients', __( 'Email получателей уведомлений (через запятую)', 'pdp_core' ) )
             ) )
             ->add_tab( __( 'Информация', 'pdp_core' ), array(
                 Field::make( 'complex', 'advantages', __( 'Список преимуществ', 'pdp_core' ) )

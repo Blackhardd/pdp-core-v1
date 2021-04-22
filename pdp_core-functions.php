@@ -391,6 +391,10 @@ function pdp_get_hair_length_title( $id = false ){
 	}
 }
 
+function pdp_get_salon_recipients( $id ){
+	return explode( ',', carbon_get_post_met( $id, 'notification_recipients' ) );
+}
+
 if( !function_exists( 'write_log' ) ){
 	function write_log( $log ){
 		if( true === WP_DEBUG ){
