@@ -83,10 +83,12 @@ class PDP_Core_Ajax{
     public function simple_booking(){
     	if( $this->check_nonce( 'simple_booking' ) ){
 		    $data = array(
-			    'name'      => $_POST['name'],
-			    'phone'     => $_POST['phone'],
-			    'salon'     => $_POST['salon'],
-			    'service'   => $_POST['service']
+			    'name'          => $_POST['name'],
+			    'phone'         => $_POST['phone'],
+			    'salon'         => $_POST['salon'],
+			    'service'       => $_POST['service'],
+			    'page_title'    => $_POST['page_title'],
+			    'page_url'      => $_POST['page_url']
 		    );
 
 		    $this->message( $this->mailer->simple_booking_notification( $data ), sprintf( '%s<br>%s', __( 'Спасибо за запись!', 'pdp_core' ), __( 'В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) ) );
@@ -96,9 +98,11 @@ class PDP_Core_Ajax{
 	public function category_booking(){
 		if( $this->check_nonce( 'category_booking' ) ) {
 			$data = array(
-				'name'      => $_POST['name'],
-				'phone'     => $_POST['phone'],
-				'service'   => $_POST['service']
+				'name'          => $_POST['name'],
+				'phone'         => $_POST['phone'],
+				'service'       => $_POST['service'],
+				'page_title'    => $_POST['page_title'],
+				'page_url'      => $_POST['page_url']
 			);
 
 			$this->message( $this->mailer->category_booking_notification( $data ), sprintf( '%s<br>%s', __( 'Спасибо за запись!', 'pdp_core' ), __( 'В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) ) );
@@ -108,10 +112,12 @@ class PDP_Core_Ajax{
 	public function service_booking(){
 		if( $this->check_nonce( 'service_booking' ) ) {
 			$data = array(
-				'name'      => $_POST['name'],
-				'phone'     => $_POST['phone'],
-				'salon'     => $_POST['salon'],
-				'service'   => $_POST['service']
+				'name'          => $_POST['name'],
+				'phone'         => $_POST['phone'],
+				'salon'         => $_POST['salon'],
+				'service'       => $_POST['service'],
+				'page_title'    => $_POST['page_title'],
+				'page_url'      => $_POST['page_url']
 			);
 
 			$this->message( $this->mailer->service_booking_notification( $data ), sprintf( '%s<br>%s', __( 'Спасибо за запись!', 'pdp_core' ), __( 'В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) ) );

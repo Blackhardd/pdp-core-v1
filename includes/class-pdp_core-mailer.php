@@ -88,25 +88,25 @@ class PDP_Core_Mailer{
 		$recipients = $this->admin_emails;
 		$recipients[] = carbon_get_post_meta( $data['cart']->salon, 'email' );
 
-		return $this->send_to_admins( __( 'Новая заявка', 'pdp_core' ) , $this->get_template_booking( $data ) );
+		return $this->send_to_admins( __( 'Новая запись', 'pdp_core' ) , $this->get_template_booking( $data ) );
 	}
 
 	public function simple_booking_notification( $data ){
 		$recipients = $this->admin_emails;
 		$recipients[] = carbon_get_post_meta( $data['salon'], 'email' );
 
-		return $this->send_to_admins( __( 'Новая заявка', 'pdp_core' ) , $this->get_template_booking( $data, true ) );
+		return $this->send_to_admins( __( 'Заявка', 'pdp_core' ) . " | {$data['page_title']}" , $this->get_template_booking( $data, true ) );
 	}
 
 	public function service_booking_notification( $data ){
 		$recipients = $this->admin_emails;
 		$recipients[] = carbon_get_post_meta( $data['salon'], 'email' );
 
-		return $this->send_to_admins( __( 'Новая заявка', 'pdp_core' ) , $this->get_template_booking( $data, true ) );
+		return $this->send_to_admins( __( 'Заявка', 'pdp_core' ) . " | {$data['page_title']}" , $this->get_template_booking( $data, true ) );
 	}
 
 	public function category_booking_notification( $data ){
-		return $this->send_to_admins( __( 'Новая заявка', 'pdp_core' ) , $this->get_template_booking( $data, true ) );
+		return $this->send_to_admins( __( 'Заявка', 'pdp_core' ) . " | {$data['page_title']}" , $this->get_template_booking( $data, true ) );
 	}
 
 	public function gift_card_notification( $data ){

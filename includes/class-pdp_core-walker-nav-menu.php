@@ -60,18 +60,21 @@ class PDP_Core_Walker_Nav_Menu extends Walker_Nav_Menu {
          * Генерируем атрибуты Vue
          */
         $vue = '';
+	    if( $args->walker->has_children && $depth == 0 ){
+			$vue .= " @click='showSubMenu({$item->ID})' :class='{ active: activeSubMenu == {$item->ID} }'";
+	    }
 
         /**
          * Генерируем элемент меню
          */
         $output .= $indent . '<li' . $id . $value . $class_names . $vue . '>';
 
-        $attributes  = ! empty( $item->attr_title ) ? ' title="'  . esc_attr( $item->attr_title ) .'"' : '';
-        $attributes .= ! empty( $item->target )     ? ' target="' . esc_attr( $item->target     ) .'"' : '';
-        $attributes .= ! empty( $item->xfn )        ? ' rel="'    . esc_attr( $item->xfn        ) .'"' : '';
+        $attributes  = !empty( $item->attr_title ) ? ' title="'  . esc_attr( $item->attr_title ) .'"' : '';
+        $attributes .= !empty( $item->target )     ? ' target="' . esc_attr( $item->target     ) .'"' : '';
+        $attributes .= !empty( $item->xfn )        ? ' rel="'    . esc_attr( $item->xfn        ) .'"' : '';
 
         if( $item->url != '#' ){
-	        $attributes .= ! empty( $item->url ) ? ' href="' . esc_attr( $item->url ) . '"' : '';
+	        $attributes .= !empty( $item->url ) ? ' href="' . esc_attr( $item->url ) . '"' : '';
         }
 
         // ссылка и околоссылочный текст
