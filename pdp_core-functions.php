@@ -198,7 +198,7 @@ function pdp_fetch_pricelists( $salon = false ){
 		$response = $service->spreadsheets_values->batchGet( $spreadsheet_id, array( 'ranges' => $ranges ) )->getValueRanges();
 
 		update_post_meta( $salon_id, '_pdp_pricelist', pdp_parse_pricelist( $titles, $response ) );
-		update_post_meta( $salon_id, '_pdp_pricelist_last_update', date( "Y-m-d H:i:s" ) );
+		update_post_meta( $salon_id, '_pdp_pricelist_last_update', current_time( "Y-m-d H:i:s" ) );
 	}
 }
 

@@ -28,31 +28,36 @@ class PDP_Core_Google {
         if( $this->get_token() ){
             $this->client->setAccessToken( $this->get_token() );
         }
-
-        if( $this->client->isAccessTokenExpired() ){
-            if( $this->client->getRefreshToken() ){
-                $this->client->fetchAccessTokenWithRefreshToken( $this->client->getRefreshToken() );
-            }
-            else{
-                $auth_url = $this->client->createAuthUrl();
-
-	            if( !$this->auth_code ){
-		            echo '<div class="pdp-infobox alert"><div class="pdp-infobox__message">Для синхронизации цен нужно авторизовать в Google</div><div class="pdp-infobox__action"><a href="' . $auth_url . '" class="pdp-btn">' . __('Авторизоваться в Google', 'pdp_core') . '</a></div></div>';
-	            }
-	            else{
-		            $this->client->setAccessToken( json_encode( $this->client->fetchAccessTokenWithAuthCode( $this->auth_code ) ) );
-	            }
-            }
-
-            update_option( 'google_token', $this->client->getAccessToken() );
-        }
     }
 
     public function get_client(){
-        return $this->client;
+    	if( !$this->client->isAccessTokenExpired() ){
+		    return $this->client;
+	    }
+    	else{
+		    $this->display_auth_message();
+	    }
     }
 
     private function get_token(){
     	return get_option( 'google_token' );
     }
+
+	public function display_auth_message(){
+    	if( $this->client->getRefreshToken() ){
+    		$this->client->fetchAccessTokenWithRefreshToken( $this->client->getRefreshToken() );
+    	}
+    	else{
+    		$auth_url = $this->client->createAuthUrl();
+
+    		if( !$this->auth_code ){
+    			echo '<div class="pdp-infobox alert"><div class="pdp-infobox__message">Для синхронизации цен нужно авторизовать в Google</div><div class="pdp-infobox__action"><a href="' . $auth_url . '" class="pdp-btn">' . __('Авторизоваться в Google', 'pdp_core') . '</a></div></div>';
+    		}
+    		else{
+    			$this->client->setAccessToken( $this->client->fetchAccessTokenWithAuthCode( $this->auth_code ) );
+    		}
+    	}
+
+    	update_option( 'google_token', $this->client->getAccessToken() );
+	}
 }

@@ -9,15 +9,15 @@
 			$google_api = new PDP_Core_Google();
 			$client = $google_api->get_client();
 
-			if( !$client->isAccessTokenExpired() ){
+			if( !is_null( $client ) ){
 				$salons = pdp_get_salons(); ?>
 				<div class="salons-list">
 					<div class="salons-list__header">
 						<h3><?=__( 'Салоны', 'pdp_core' ); ?></h3>
 					</div>
 					<div class="salons-list__body">
-						<?php foreach( $salons as $salon ){ ?>
-							<div class="salons-list__row <?php echo ( !$salon->_pricelist_sheet_id ) ? 'disabled' : ''; ?>">
+						<?php foreach( $salons as $salon ) : ?>
+							<div class="salons-list__row <?=( !$salon->_pricelist_sheet_id ) ? 'disabled' : ''; ?>">
 								<div class="salons-list__col salons-list__col_title">
 									<?=$salon->post_title; ?>
 								</div>
@@ -43,7 +43,7 @@
 									<button class="pdp-btn" data-update-pricelist="<?=$salon->ID; ?>" <?php echo ( !$salon->_pricelist_sheet_id ) ? 'disabled' : ''; ?>><?=__( 'Синхронизировать', 'pdp_core' ); ?></button>
 								</div>
 							</div>
-						<?php } ?>
+						<?php endforeach; ?>
 					</div>
 					<div class="salons-list__footer">
 						<button class="pdp-btn" data-update-pricelists><?=__( 'Синхронизировать все цены', 'pdp_core' ); ?></button>
