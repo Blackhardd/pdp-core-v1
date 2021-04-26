@@ -5,14 +5,13 @@ use Carbon_Fields\Field;
 /**
  * Require Carbon Fields
  */
-add_action('after_setup_theme', 'pdp_carbon_fields_load');
-function pdp_carbon_fields_load()
-{
-	require_once('vendor/autoload.php');
+add_action( 'after_setup_theme', 'pdp_carbon_fields_load' );
+function pdp_carbon_fields_load(){
+	require_once( 'vendor/autoload.php' );
 	\Carbon_Fields\Carbon_Fields::boot();
 }
 
-add_action('admin_menu', function(){
+add_action( 'admin_menu', function(){
 	add_menu_page(
 		'Настройки сайта',
 		'Pied-De-Poule',
@@ -31,7 +30,7 @@ add_action('admin_menu', function(){
 		'google-api-settings',
 		'pdp_google_api_settings'
 	);
-});
+} );
 
 function pdp_google_api_settings(){
     require PDP_PLUGIN_PATH . 'templates/pricelists-sync.php';
