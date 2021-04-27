@@ -31,12 +31,7 @@ class PDP_Core_Google {
     }
 
     public function get_client(){
-    	if( !$this->client->isAccessTokenExpired() ){
-		    return $this->client;
-	    }
-    	else{
-		    $this->display_auth_message();
-	    }
+    	return $this->client;
     }
 
     private function get_token(){
@@ -55,9 +50,9 @@ class PDP_Core_Google {
     		}
     		else{
     			$this->client->setAccessToken( $this->client->fetchAccessTokenWithAuthCode( $this->auth_code ) );
+
+			    update_option( 'google_token', $this->client->getAccessToken() );
     		}
     	}
-
-    	update_option( 'google_token', $this->client->getAccessToken() );
 	}
 }
