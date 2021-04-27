@@ -49,7 +49,11 @@
 						<button class="pdp-btn" data-update-pricelists><?=__( 'Синхронизировать все цены', 'pdp_core' ); ?></button>
 					</div>
 				</div>
-			<?php } ?>
+			<?php
+			}
+			else{
+			    $google_api->display_auth_message();
+			} ?>
 		</main>
 	</div>
 </div>
