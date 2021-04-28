@@ -12,25 +12,15 @@ function pdp_carbon_fields_load(){
 }
 
 add_action( 'admin_menu', function(){
-	add_menu_page(
-		'Настройки сайта',
-		'Pied-De-Poule',
-		'manage_options',
-		'pdp-options',
-		'pdp_options_page',
-		'none',
-		4
-	);
-
 	add_submenu_page(
-		'pdp-options',
+		'crb_carbon_fields_container_pied-de-poule.php',
 		'Синхронизация цен',
 		'Синхронизация цен',
 		'manage_options',
 		'google-api-settings',
 		'pdp_google_api_settings'
 	);
-} );
+}, 11 );
 
 function pdp_google_api_settings(){
     require PDP_PLUGIN_PATH . 'templates/pricelists-sync.php';
