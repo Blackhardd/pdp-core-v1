@@ -384,6 +384,16 @@ function pdp_get_salon_recipients( $id ){
 	return explode( ',', get_post_meta( $id, '_notification_recipients', true ) );
 }
 
+function pdp_get_post_data(){
+	$data = array();
+
+	foreach( $_POST as $key => $value ){
+		$data[$key] = $value;
+	}
+
+	return $data;
+}
+
 function pdp_utm_fields(){
 	if( isset( $_GET['utm_source'] ) ){
 		$utm_values = array(

@@ -35,7 +35,7 @@ class PDP_Core_Ajax{
 			return true;
 		}
 
-		return false;
+		return;
     }
 
     private function register_public_actions(){
@@ -82,14 +82,7 @@ class PDP_Core_Ajax{
 
     public function simple_booking(){
     	if( $this->check_nonce( 'simple_booking' ) ){
-		    $data = array(
-			    'name'          => $_POST['name'],
-			    'phone'         => $_POST['phone'],
-			    'salon'         => $_POST['salon'],
-			    'service'       => $_POST['service'],
-			    'page_title'    => $_POST['page_title'],
-			    'page_url'      => $_POST['page_url']
-		    );
+		    $data = pdp_get_post_data();
 
 		    $this->message( $this->mailer->simple_booking_notification( $data ), sprintf( '%s<br>%s', __( 'Спасибо за запись!', 'pdp_core' ), __( 'В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) ) );
 	    }
@@ -97,13 +90,7 @@ class PDP_Core_Ajax{
 
 	public function category_booking(){
 		if( $this->check_nonce( 'category_booking' ) ) {
-			$data = array(
-				'name'          => $_POST['name'],
-				'phone'         => $_POST['phone'],
-				'service'       => $_POST['service'],
-				'page_title'    => $_POST['page_title'],
-				'page_url'      => $_POST['page_url']
-			);
+			$data = pdp_get_post_data();
 
 			$this->message( $this->mailer->category_booking_notification( $data ), sprintf( '%s<br>%s', __( 'Спасибо за запись!', 'pdp_core' ), __( 'В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) ) );
 		}
@@ -111,14 +98,7 @@ class PDP_Core_Ajax{
 
 	public function service_booking(){
 		if( $this->check_nonce( 'service_booking' ) ) {
-			$data = array(
-				'name'          => $_POST['name'],
-				'phone'         => $_POST['phone'],
-				'salon'         => $_POST['salon'],
-				'service'       => $_POST['service'],
-				'page_title'    => $_POST['page_title'],
-				'page_url'      => $_POST['page_url']
-			);
+			$data = pdp_get_post_data();
 
 			$this->message( $this->mailer->service_booking_notification( $data ), sprintf( '%s<br>%s', __( 'Спасибо за запись!', 'pdp_core' ), __( 'В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) ) );
 		}
@@ -126,12 +106,7 @@ class PDP_Core_Ajax{
 
 	public function gift_card_order(){
 		if( $this->check_nonce( 'gift_card_order' ) ){
-	        $data = array(
-	            'name'      => $_POST['name'],
-	            'phone'     => $_POST['phone'],
-	            'email'     => $_POST['email'],
-	            'card'      => $_POST['card']
-		    );
+	        $data = pdp_get_post_data();
 
 			$this->message( $this->mailer->gift_card_notification( $data ), sprintf( '%s<br>%s', __( 'Спасибо за заказ!', 'pdp_core' ), __( 'В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) ) );
 		}
@@ -139,12 +114,7 @@ class PDP_Core_Ajax{
 
 	public function school_application(){
 		if( $this->check_nonce( 'school_application' ) ){
-			$data = array(
-				'name'      => $_POST['name'],
-				'phone'     => $_POST['phone'],
-				'email'     => $_POST['email'],
-				'service'   => $_POST['service']
-			);
+			$data = pdp_get_post_data();
 
 			$this->message( $this->mailer->school_application_notification( $data ), sprintf( '%s<br>%s', __( 'Спасибо за заявку!', 'pdp_core' ), __( 'В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) ) );
 		}
@@ -152,13 +122,7 @@ class PDP_Core_Ajax{
 
 	public function vacancy_application(){
 		if( $this->check_nonce( 'vacancy_application' ) ){
-			$data = array(
-				'name'      => $_POST['name'],
-				'phone'     => $_POST['phone'],
-				'email'     => $_POST['email'],
-				'vacancy'   => $_POST['vacancy'],
-				'message'   => $_POST['message']
-			);
+			$data = pdp_get_post_data();
 
 			if( $_FILES['attachment']['size'] != 0 ){
 				if( !function_exists( 'wp_handle_upload' ) ){

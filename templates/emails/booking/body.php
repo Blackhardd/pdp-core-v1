@@ -3,9 +3,28 @@
         <td>
             <table width="100%" style="margin-bottom: 30px; border-spacing: 0">
                 <tr>
-                    <td><h4 style="margin: 0;"><?=__( 'Страница', 'pdp_core' ); ?>:</h4></td>
-                    <td><a href="<?=$data['data']['page_url']; ?>"><?=$data['data']['page_title']; ?></a></td>
+                    <td><h4 style="margin: 0;"><?=__( 'Аналитика', 'pdp_core' ); ?>:</h4></td>
                 </tr>
+                <tr>
+                    <td><?=__( 'Страница', 'pdp_core' ); ?>: <a href="<?=$data['data']['page_url']; ?>"><?=$data['data']['page_title']; ?></a></td>
+                </tr>
+                <?php if( isset( $data['data']['utm_source'] ) ) : ?>
+                    <tr>
+                        <td><?=__( 'Источник', 'pdp_core' ); ?>: <?=$data['data']['utm_source']; ?></td>
+                    </tr>
+                    <tr>
+                        <td><?=__( 'Тип трафика', 'pdp_core' ); ?>: <?=$data['data']['utm_medium']; ?></td>
+                    </tr>
+                    <tr>
+                        <td><?=__( 'ID кампании', 'pdp_core' ); ?>: <?=$data['data']['utm_campaign']; ?></td>
+                    </tr>
+                    <tr>
+                        <td><?=__( 'ID объявления', 'pdp_core' ); ?>: <?=$data['data']['utm_content']; ?></td>
+                    </tr>
+                    <tr>
+                        <td><?=__( 'Ключевое слово', 'pdp_core' ); ?>: <?=$data['data']['utm_term']; ?></td>
+                    </tr>
+                <?php endif; ?>
             </table>
         </td>
     </tr>
