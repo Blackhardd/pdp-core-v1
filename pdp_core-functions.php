@@ -368,20 +368,36 @@ function pdp_get_template( $path = '', $data = [] ){
 }
 
 function pdp_get_hair_length_title( $id = false ){
-	$lengths = array(
-		__( 'от 5-15 см', 'pdp' ),
-		__( 'от 15 - 25 см (выше плеч, каре, боб)', 'pdp' ),
-		__( 'от 25 - 40 см (ниже плеч/выше лопаток)', 'pdp' ),
-		__( 'от 40 - 60 см (ниже лопаток)', 'pdp' )
-	);
-
 	if( $id !== false ){
+		$lengths = array(
+			__( 'от 5-15 см', 'pdp' ),
+			__( 'от 15 - 25 см (выше плеч, каре, боб)', 'pdp' ),
+			__( 'от 25 - 40 см (ниже плеч/выше лопаток)', 'pdp' ),
+			__( 'от 40 - 60 см (ниже лопаток)', 'pdp' )
+		);
+
 		return $lengths[$id];
 	}
 }
 
 function pdp_get_salon_recipients( $id ){
 	return explode( ',', get_post_meta( $id, '_notification_recipients', true ) );
+}
+
+function pdp_utm_fields(){
+	if( isset( $_GET['utm_source'] ) ){
+		$utm_values = array(
+			'utm_source'    => $_GET['utm_source'],
+			'utm_medium'    => $_GET['utm_medium'],
+			'utm_campaign'  => $_GET['utm_campaign'],
+			'utm_content'   => $_GET['utm_content'],
+			'utm_term'      => $_GET['utm_term']
+		);
+
+		foreach( $utm_values as $key => $value ){
+			echo "<input type='hidden' name='{$key}' value='{$value}'>";
+		}
+	}
 }
 
 if( !function_exists( 'write_log' ) ){
