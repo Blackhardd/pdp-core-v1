@@ -54,5 +54,9 @@ class PDP_Core_Google {
     	}
 
 		update_option( 'google_token', $this->client->getAccessToken() );
+
+    	if( isset( $_GET['code'] ) ){
+    		wp_redirect( $this->redirect_url );
+	    }
 	}
 }
