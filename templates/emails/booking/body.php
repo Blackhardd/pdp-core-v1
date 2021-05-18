@@ -35,6 +35,8 @@
             <table width="100%" style="margin-bottom: 30px; border-spacing: 0">
                 <tr>
                     <td><h4 style="margin: 0;"><?=__( 'Салон', 'pdp_core' ); ?>:</h4></td>
+                </tr>
+                <tr>
                     <td><?=$data['salon_name']; ?></td>
                 </tr>
             </table>

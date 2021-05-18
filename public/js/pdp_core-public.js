@@ -76,7 +76,7 @@
 
 
 	function pdp_init_sliders(){
-		if($('.service-categories__slider, .salons-slider, .teamSlider').length){
+		if(!$('body').hasClass('elementor-page') && $('.service-categories__slider, .salons-slider, .teamSlider').length){
 			$('.service-categories__slider, .salons-slider, .teamSlider').each(function(i){
 				let offset = $(this).offset().left;
 				$(this).width('calc(100vw - ' + offset + 'px)');
