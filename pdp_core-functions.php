@@ -210,7 +210,7 @@ function pdp_parse_pricelist( $categories, $data ){
 		$is_variable_price = false;
 
 		foreach( $range as $row ){
-			if( $row[0] != '' ){
+			if( isset( $row[0] ) && $row[0] != '' ){
 				$row = array_values( array_filter( $row ) );
 
 				if( strpos( $row[0], '[category]' ) !== false ){

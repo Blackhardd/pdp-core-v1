@@ -46,7 +46,7 @@ class PDP_Core_Google {
     		$auth_url = $this->client->createAuthUrl();
 
     		if( !$this->auth_code ){
-    			echo '<div class="pdp-infobox alert"><div class="pdp-infobox__message">Для синхронизации цен нужно авторизоваться в Google</div><div class="pdp-infobox__action"><a href="' . $auth_url . '" class="pdp-btn">' . __('Авторизоваться в Google', 'pdp_core') . '</a></div></div>';
+    			echo '<div class="pdp-infobox alert"><div class="pdp-infobox__message">' . __( 'Для синхронизации цен нужно авторизоваться в Google', 'pdp_core' ) . '</div><div class="pdp-infobox__action"><a href="' . $auth_url . '" class="pdp-btn">' . __( 'Авторизоваться в Google', 'pdp_core' ) . '</a></div></div>';
     		}
     		else{
     			$this->client->setAccessToken( $this->client->fetchAccessTokenWithAuthCode( $this->auth_code ) );
@@ -54,9 +54,5 @@ class PDP_Core_Google {
     	}
 
 		update_option( 'google_token', $this->client->getAccessToken() );
-
-    	if( isset( $_GET['code'] ) ){
-    		wp_redirect( $this->redirect_url );
-	    }
 	}
 }
