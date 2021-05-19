@@ -57,14 +57,34 @@ function pdp_get_pricelist_id( $salon_id = false ){
 	return false;
 }
 
-function pdp_get_salons( $sort = 'ASC' ){
-	return get_posts(
-		array(
-			'numberposts'   => -1,
-			'post_type'     => 'salon',
-			'order'         => $sort
-		)
+function pdp_get_salons( $sort = 'ASC', $format = false ){
+	$params = array(
+		'numberposts'   => -1,
+		'post_type'     => 'salon',
+		'order'         => $sort
 	);
+
+	if( !$format ){
+		return get_posts( $params );
+	}
+	else if( $format == 'slider' ){
+		$salons = array();
+
+		foreach( get_posts( $params ) as $item ){
+			$data = array();
+
+			$data['title'] = $item->post_title;
+			$city_terms = get_the_terms( $item->ID, 'city' );
+			$data['city'] = array_pop( $city_terms )->name;
+			$data['phone'] = carbon_get_post_meta( $item->ID, 'phone' );
+			$data['image'] = get_the_post_thumbnail( $item->ID, 'salons-slider-thumb' );
+			$data['link'] = get_permalink( $item->ID );
+
+			$salons[] = $data;
+		}
+
+		return $salons;
+	}
 }
 
 function pdp_get_service_categories(){
