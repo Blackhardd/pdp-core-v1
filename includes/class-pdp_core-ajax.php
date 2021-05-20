@@ -72,7 +72,7 @@ class PDP_Core_Ajax{
 			'name'              => $_POST['name'],
 			'email'             => $_POST['email'],
 			'phone'             => $_POST['phone'],
-			'cart'              => json_decode( str_replace( '\\', '', $_POST['cart'] ) ),
+			'cart'              => json_decode( wp_unslash( $_POST['cart'] ), true ),
 			'total'             => $_POST['total'],
 			'is_hair_services'  => $_POST['is_hair_services']
 		);

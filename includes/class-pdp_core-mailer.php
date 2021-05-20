@@ -31,7 +31,7 @@ class PDP_Core_Mailer{
 	}
 
 	private function get_template_booking( $data, $is_simple = false ){
-		$salon_name = PDP_Core_Salon::get_by_id( ( !$is_simple ) ? $data['cart']->salon : $data['salon'] )->post_title;
+		$salon_name = PDP_Core_Salon::get_by_id( ( !$is_simple ) ? $data['cart']['salon'] : $data['salon'] )->post_title;
 		ob_start();
 		pdp_get_template( 'emails/booking/body.php', ['data' => $data, 'salon_name' => $salon_name] );
 
@@ -85,7 +85,7 @@ class PDP_Core_Mailer{
 	}
 
 	public function booking_notification( $data ){
-		$recipients = array_merge( $this->admin_emails, pdp_get_salon_recipients( $data['cart']->salon ) );
+		$recipients = array_merge( $this->admin_emails, pdp_get_salon_recipients( $data['cart']['salon'] ) );
 
 		return $this->send_to_admins( __( 'Новая запись', 'pdp_core' ) , $this->get_template_booking( $data ), array(), $recipients );
 	}

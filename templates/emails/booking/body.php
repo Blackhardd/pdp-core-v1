@@ -57,15 +57,15 @@
 		</table>
 	</td>
 </tr>
-<?php if( isset( $data['data']['cart']->master_option ) || isset( $data['data']['is_hair_services'] ) ) :
-	$hair_length = pdp_get_hair_length_title( $data['data']['cart']->hair_length ); ?>
+<?php if( isset( $data['data']['cart']['master_option'] ) || isset( $data['data']['is_hair_services'] ) ) :
+	$hair_length = pdp_get_hair_length_title( $data['data']['cart']['hair_length'] ); ?>
     <tr>
         <td>
             <table width="100%" style="margin-bottom: 30px; border-spacing: 0">
                 <tr>
                     <td><h4><?=__( 'Дополнительная информация', 'pdp_core' ); ?>:</h4></td>
                 </tr>
-                <?=( $data['data']['cart']->master_option ) ? "<tr><td>Старший мастер.</td></tr>" : ''; ?>
+                <?=( $data['data']['cart']['master_option'] ) ? "<tr><td>Старший мастер.</td></tr>" : ''; ?>
                 <?=( $data['data']['is_hair_services'] ) ? "<tr><td>Длина волос {$hair_length}.</td></tr>" : ''; ?>
             </table>
         </td>
