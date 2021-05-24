@@ -8,15 +8,12 @@ class PDP_Core_CPT {
         $this->register_salon();
         $this->register_salon_taxonomies();
         $this->register_promotion();
-        $this->register_master();
-        $this->register_master_taxonomies();
         $this->register_vacancy();
     }
 
     public function init_post_types_meta(){
         $this->register_salon_meta();
         $this->register_promotion_meta();
-        $this->register_master_meta();
         $this->register_vacancy_meta();
     }
 

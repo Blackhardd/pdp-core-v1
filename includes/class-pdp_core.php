@@ -145,11 +145,6 @@ class PDP_Core {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-pdp_core-mailer.php';
 
         /**
-         * The class responsible for cart functionality.
-         */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-pdp_core-cart.php';
-
-        /**
          * The class responsible for shortcodes.
          */
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-pdp_core-shortcodes.php';
