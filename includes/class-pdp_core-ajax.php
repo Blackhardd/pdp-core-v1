@@ -72,12 +72,14 @@ class PDP_Core_Ajax{
 			'is_hair_services'  => $_POST['is_hair_services']
 		);
 
-		if( $thank_you_page_id = get_option( '_thank_you_page_id' ) ){
+		if( get_option( '_thank_you_page_id' ) || get_option( '_thank_you_page_id_ua' ) ){
+			$redirect_url = ( pll_current_language() == 'ru' ) ? get_permalink( get_option( '_thank_you_page_id' ) ) : get_permalink( get_option( '_thank_you_page_id_ua' ) );
+
 			$this->response(
 				$this->mailer->booking_notification( $data ),
 				sprintf( '%s<br>%s', __( 'Спасибо за запись!', 'pdp_core' ), __( 'В ближайшее время с вами свяжется наш менеджер.', 'pdp_core' ) ),
 				true,
-				get_permalink( $thank_you_page_id )
+				$redirect_url
 			);
 		}
 		else{
