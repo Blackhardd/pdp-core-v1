@@ -31,7 +31,7 @@ if( !defined( 'WPINC' ) ){
 }
 
 
-define( 'PDP_CORE_VERSION', '1.0.1b' );
+define( 'PDP_CORE_VERSION', '1.0.2' );
 define( 'PDP_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
 
