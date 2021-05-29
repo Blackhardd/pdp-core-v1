@@ -1,16 +1,10 @@
 <?php
 
 /**
- * The plugin bootstrap file
- *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
  *
  * @link              https://www.instagram.com/lovu_volnu/
  * @since             1.0.0
- * @package           Pdp_core
+ * @package           PDP_Core
  *
  * @wordpress-plugin
  * Plugin Name:       PIED-DE-POULE Core
@@ -25,10 +19,9 @@
  * Domain Path:       /languages
  */
 
-// If this file is called directly, abort.
-if( !defined( 'WPINC' ) ){
+if( !defined( 'WPINC' ) ) :
 	die;
-}
+endif;
 
 
 define( 'PDP_CORE_VERSION', '1.0.2' );
@@ -36,24 +29,19 @@ define( 'PDP_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
 
 register_activation_hook( __FILE__, 'activate_pdp_core' );
-function activate_pdp_core() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-pdp_core-activator.php';
-	Pdp_core_Activator::activate();
+function activate_pdp_core(){
+	require_once PDP_PLUGIN_PATH . 'includes/class-pdp_core-activator.php';
+	PDP_Core_Activator::activate();
 }
 
 
 register_deactivation_hook( __FILE__, 'deactivate_pdp_core' );
-function deactivate_pdp_core() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-pdp_core-deactivator.php';
-	Pdp_core_Deactivator::deactivate();
+function deactivate_pdp_core(){
+	require_once PDP_PLUGIN_PATH . 'includes/class-pdp_core-deactivator.php';
+	PDP_Core_Deactivator::deactivate();
 }
 
-
-/**
- * The core plugin class that is used to define internationalization,
- * admin-specific hooks, and public-facing site hooks.
- */
-require plugin_dir_path( __FILE__ ) . 'includes/class-pdp_core.php';
+require PDP_PLUGIN_PATH . 'includes/class-pdp_core.php';
 
 
 /**
@@ -75,4 +63,4 @@ run_pdp_core();
 /**
  * Require plugin functions file.
  */
-require_once plugin_dir_path( __FILE__ ) . 'pdp_core-functions.php';
+require_once PDP_PLUGIN_PATH . 'pdp_core-functions.php';

@@ -1,4 +1,4 @@
-=== Plugin Name ===
+=== PDP Core ===
 Contributors: (this should be a list of wordpress.org userid's)
 Donate link: https://www.instagram.com/lovu_volnu/
 Tags: comments, spam
