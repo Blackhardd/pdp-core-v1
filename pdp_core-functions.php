@@ -57,11 +57,11 @@ function pdp_get_pricelist_id( $salon_id = false ){
 	return false;
 }
 
-function pdp_get_salons( $sort = 'ASC', $format = false ){
+function pdp_get_salons( $order = 'ASC', $format = false ){
 	$params = array(
 		'numberposts'   => -1,
 		'post_type'     => 'salon',
-		'order'         => $sort
+		'order'         => $order
 	);
 
 	if( !$format ){
@@ -85,6 +85,16 @@ function pdp_get_salons( $sort = 'ASC', $format = false ){
 
 		return $salons;
 	}
+}
+
+function pdp_get_promotions( $order = 'ASC' ){
+	$params = array(
+		'numberposts'   => -1,
+		'post_type'     => 'promotion',
+		'order'         => $order
+	);
+
+	return get_posts( $params );
 }
 
 function pdp_get_service_categories(){
