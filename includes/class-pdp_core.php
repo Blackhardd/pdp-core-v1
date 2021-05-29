@@ -64,7 +64,6 @@ class PDP_Core {
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
-		$this->define_public_hooks();
         $this->init_custom_post_types();
         $this->define_ajax_actions();
         $this->define_shortcodes();
