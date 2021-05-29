@@ -76,14 +76,3 @@ run_pdp_core();
  * Require plugin functions file.
  */
 require_once plugin_dir_path( __FILE__ ) . 'pdp_core-functions.php';
-
-
-/**
- * Session start
- */
-add_action( 'init', 'pdp_session_start' );
-function pdp_session_start(){
-    if( !session_id() ){
-        session_start();
-    }
-}
