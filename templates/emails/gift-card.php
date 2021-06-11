@@ -19,7 +19,7 @@
 				<td><h4><?=__( 'Заказ', 'pdp_core' ); ?>:</h4></td>
 			</tr>
 			<tr>
-				<td><?=sprintf( __( 'Подарочный сертификат на сумму %s грн.', 'pdp_core' ), $data['data']['card'] ); ?></td>
+				<td><?=sprintf( __( 'Подарочный сертификат на сумму %s грн.', 'pdp_core' ), $data['data']['gift_card'] ); ?></td>
 			</tr>
 		</table>
 	</td>
