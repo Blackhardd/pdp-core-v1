@@ -19,7 +19,7 @@
 				<td><h4><?=__( 'Курс', 'pdp_core' ); ?>:</h4></td>
 			</tr>
 			<tr>
-				<td><?=$data['data']['service']; ?></td>
+				<td><?=$data['data']['course']; ?></td>
 			</tr>
 		</table>
 	</td>
