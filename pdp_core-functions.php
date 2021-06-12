@@ -11,6 +11,10 @@ function pdp_carbon_fields_load(){
 	\Carbon_Fields\Carbon_Fields::boot();
 }
 
+
+/**
+ *  Admin Menu Pages
+ */
 add_action( 'admin_menu', function(){
 	add_submenu_page(
 		'crb_carbon_fields_container_pied-de-poule.php',
@@ -25,6 +29,65 @@ add_action( 'admin_menu', function(){
 function pdp_google_api_settings(){
     require PDP_PLUGIN_PATH . 'templates/pricelists-sync.php';
 }
+
+
+/**
+ *  Menus creation page fixes.
+ */
+add_action( 'load-nav-menus.php', 'pdp_init_menus_creation_page_fixes' );
+
+function pdp_init_menus_creation_page_fixes(){
+	add_action( 'pre_get_posts', 'pdp_disable_paging_for_hierarchical_post_types' );
+	add_filter( 'get_terms_args', 'pdp_remove_limit_for_hierarchical_taxonomies', 10, 2 );
+	add_filter( 'get_terms_fields', 'pdp_remove_page_links_for_hierarchical_taxonomies', 10, 3 );
+}
+
+function pdp_disable_paging_for_hierarchical_post_types( $query ){
+	if( !is_admin() || 'nav-menus' !== get_current_screen()->id ){
+		return;
+	}
+
+	if( !is_post_type_hierarchical( $query->get( 'post_type' ) ) ){
+		return;
+	}
+
+	if( 50 == $query->get( 'posts_per_page' ) ){
+		$query->set( 'nopaging', true );
+	}
+}
+
+function pdp_remove_limit_for_hierarchical_taxonomies( $args, $taxonomies ){
+	if( !is_admin() || 'nav-menus' !== get_current_screen()->id ){
+		return $args;
+	}
+
+	if( !is_taxonomy_hierarchical( reset( $taxonomies ) ) ){
+		return $args;
+	}
+
+	if( 50 == $args['number'] ){
+		$args['number'] = '';
+	}
+
+	return $args;
+}
+
+function pdp_remove_page_links_for_hierarchical_taxonomies( $selects, $args, $taxonomies ){
+	if( !is_admin() || 'nav-menus' !== get_current_screen()->id ){
+		return $selects;
+	}
+
+	if( !is_taxonomy_hierarchical( reset( $taxonomies ) ) ){
+		return $selects;
+	}
+
+	if( 'count' === $args['fields'] ){
+		$selects = array( '1' );
+	}
+
+	return $selects;
+}
+
 
 function pdp_get_pricelists_id(){
 	$salons = get_posts(
