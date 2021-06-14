@@ -1,6 +1,6 @@
 <?php
 
-class PDP_Core_Walker_Nav_Menu extends Walker_Nav_Menu {
+class PDP_Core_Mobile_Menu_Walker extends Walker_Nav_Menu {
     function start_lvl( &$output, $depth = 0, $args = NULL ){
         $output .= '<ul class="sub-menu">';
 

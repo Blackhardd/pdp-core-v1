@@ -102,7 +102,8 @@ class PDP_Core {
         /**
          * The class responsible for customizing menu.
          */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-pdp_core-walker-nav-menu.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-pdp_core-menu-walker.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-pdp_core-mobile-menu-walker.php';
 
         /**
          * The classes responsible for template loading.
