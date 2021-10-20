@@ -120,12 +120,16 @@ function pdp_get_pricelist_id( $salon_id = false ){
 	return false;
 }
 
-function pdp_get_salons( $order = 'ASC', $format = false ){
+function pdp_get_salons( $order = 'ASC', $format = false, $lang = false ){
 	$params = array(
 		'numberposts'   => -1,
 		'post_type'     => 'salon',
 		'order'         => $order
 	);
+
+	if( $lang ){
+		$params['lang'] = $lang;
+	}
 
 	if( !$format ){
 		return get_posts( $params );
