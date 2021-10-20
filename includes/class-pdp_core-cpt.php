@@ -12,6 +12,8 @@ class PDP_Core_CPT {
     }
 
     public function init_post_types_meta(){
+    	$this->register_city_taxonomy_meta();
+
         $this->register_salon_meta();
         $this->register_promotion_meta();
         $this->register_vacancy_meta();
@@ -68,6 +70,19 @@ class PDP_Core_CPT {
         ) );
     }
 
+    private function register_city_taxonomy_meta(){
+	    Container::make( 'term_meta', __( 'Настройки города', 'pdp_core' ) )
+	        ->where( 'term_taxonomy', '=', 'city' )
+	        ->add_fields( array(
+		        Field::make( 'select', 'display_in_header', __( 'Отображать в шапке', 'pdp_core' ) )
+		            ->set_options( array(
+			            'yes'   => __( 'Да', 'pdp_core' ),
+			            'no'    => __( 'Нет', 'pdp_core' ),
+		            ) )
+		            ->set_default_value( 'yes' )
+	            ) );
+    }
+
     private function register_salon_meta(){
         Container::make( 'post_meta', __( 'Настройки салона', 'pdp_core' ) )
             ->where( 'post_type', '=', 'salon' )
@@ -118,6 +133,29 @@ class PDP_Core_CPT {
                             ->set_width( 15 )
                     ) )
                     ->set_collapsed( true )
+            ) )
+            ->add_tab( __( 'Разное', 'pdp_core' ), array(
+            	Field::make( 'select', 'display_in_booking', __( 'Отображать на странице записи', 'pdp_core' ) )
+	                ->set_options( array(
+	                	'yes'   => __( 'Да', 'pdp_core' ),
+	                	'no'    => __( 'Нет', 'pdp_core' ),
+	                ) )
+	                ->set_default_value( 'yes' )
+	                ->set_width( 30 ),
+	            Field::make( 'select', 'display_in_header', __( 'Отображать в шапке', 'pdp_core' ) )
+	                 ->set_options( array(
+		                 'yes'   => __( 'Да', 'pdp_core' ),
+		                 'no'    => __( 'Нет', 'pdp_core' ),
+	                 ) )
+	                 ->set_default_value( 'yes' )
+	                 ->set_width( 30 ),
+	            Field::make( 'select', 'display_in_forms', __( 'Отображать в формах', 'pdp_core' ) )
+	                 ->set_options( array(
+		                 'yes'   => __( 'Да', 'pdp_core' ),
+		                 'no'    => __( 'Нет', 'pdp_core' ),
+	                 ) )
+	                 ->set_default_value( 'yes' )
+	                 ->set_width( 30 )
             ) );
     }
 

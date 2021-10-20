@@ -14,23 +14,25 @@ class PDP_Core_Salon {
         );
 
         foreach( $salons as $salon ){
-            $terms = get_the_terms( $salon->ID, 'city' );
-            $city = array_pop( $terms )->name;
+        	if( carbon_get_post_meta( $salon->ID, 'display_in_booking' ) === 'yes' ){
+		        $terms = get_the_terms( $salon->ID, 'city' );
+		        $city = array_pop( $terms )->name;
 
-            $has_pricelist = false;
+		        $has_pricelist = false;
 
-            if( carbon_get_post_meta( $salon->ID, 'pricelist_sheet_id' ) ){
-	            $has_pricelist = true;
-            }
+		        if( carbon_get_post_meta( $salon->ID, 'pricelist_sheet_id' ) ){
+			        $has_pricelist = true;
+		        }
 
-            $data[] = array(
-                'id'        => $salon->ID,
-                'city'      => $city,
-                'title'     => $salon->post_title,
-                'email'     => carbon_get_post_meta( $salon->ID, 'email' ),
-                'phone'     => carbon_get_post_meta( $salon->ID, 'phone' ),
-	            'pricelist' => $has_pricelist
-            );
+		        $data[] = array(
+			        'id'        => $salon->ID,
+			        'city'      => $city,
+			        'title'     => $salon->post_title,
+			        'email'     => carbon_get_post_meta( $salon->ID, 'email' ),
+			        'phone'     => carbon_get_post_meta( $salon->ID, 'phone' ),
+			        'pricelist' => $has_pricelist
+		        );
+	        }
         }
 
         return $data;
